@@ -9,11 +9,8 @@ using namespace std;
 int main(){
 
     Mammal g("om", 2, Skin::Feather, 2, 18);
-    Mammal h(g);
-    Mammal s = g;
-    cout << g << endl;
-    cout << h << endl;
-    cout << s << endl;
+    g.make_sound();
+    Bird().make_sound();
 
 
     return 0;

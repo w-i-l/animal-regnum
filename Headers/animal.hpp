@@ -16,6 +16,11 @@ class Animal{
 
     public:
 
+        // getters
+        string get_name() const{ return this->name; }
+        int get_no_of_feet() const{ return this->no_of_feet; }
+        Skin get_type_of_skin() const{ return this->type_of_skin; }
+
         // constructors
         Animal();
         Animal(string name, int no_of_feet, Skin type_of_skin);
@@ -27,6 +32,9 @@ class Animal{
         // friend
         friend istream& operator>>(istream& in, Animal& copy);
         friend ostream& operator<<(ostream& out, const Animal& copy);
+
+        // virtual
+        virtual void make_sound() = 0;
 
 };
 

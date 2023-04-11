@@ -86,3 +86,8 @@ ostream& operator<<(ostream& out, const Bird& copy){
 
     return out;
 }
+
+
+void Bird::make_sound(){
+    cout << "CIP CIP RIP" << endl;
+}

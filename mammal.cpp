@@ -51,3 +51,8 @@ ostream& operator<<(ostream& out, Mammal& copy){
     cout << "Number of mammal glands: " << copy.no_of_mammal_glands << endl;
     cout << "Reproductive maturity year: " << copy.reproductive_maturity_year << endl;
 }
+
+
+void Mammal::make_sound(){
+    cout << "GRHHHHH" << endl;
+}

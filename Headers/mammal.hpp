@@ -14,6 +14,10 @@ class Mammal : public Animal{
 
     public:
 
+        // getters
+        int get_no_of_mammal_glands() const{ return this->no_of_mammal_glands; }
+        int  get_reproductive_maturity_year() const{ return this->reproductive_maturity_year; }
+
         // constructors
         Mammal();
         Mammal(string name, int no_of_feet, Skin type_of_skin, int no_of_mammal_glands, int reproductive_maturity_year);
@@ -26,6 +30,8 @@ class Mammal : public Animal{
         friend istream& operator>>(istream& in, Mammal& copy);
         friend ostream& operator<<(ostream& out, Mammal& copy);
 
-};
+        // virtual
+        void make_sound();
+}; 
 
 #endif
