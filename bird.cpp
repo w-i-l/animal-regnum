@@ -33,6 +33,26 @@ Bird& Bird::operator=(const Bird& copy){
 }
 
 
+// Archaeopteryx Bird::operator + (const Reptile& copy){
+
+//     Archaropteryx* obj = new Archaropteryx;
+
+//     obj->name = this->name;
+//     obj->no_of_feet = this->no_of_feet;
+//     obj->type_of_skin = this->type_of_skin;
+
+//     obj->wing_color = this->wing_color;
+//     obj->no_of_eggs = this->no_of_eggs;
+
+    
+//     obj->is_venomous = copy.is_venomous;
+
+//     return *obj;
+
+// }
+
+
+
 istream& operator>>(istream& in, Bird& copy){
     
     in >> (Animal&)copy;

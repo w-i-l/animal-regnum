@@ -1,9 +1,7 @@
-#include <string>
 #include "animal.hpp"
 #include "skin.hpp"
+#include "reptile.hpp"
 using namespace std;
-    
-
 
 #ifndef BIRD_FILE_INCLUDED
 #define BIRD_FILE_INCLUDED
@@ -26,7 +24,7 @@ class Bird : virtual public Animal{
         Bird(const Bird& copy);
 
         // operators
-        Bird& operator=(const Bird& copy);
+        Bird& operator = (const Bird& copy);
 
         // friend
         friend istream& operator>>(istream& in, Bird& copy);

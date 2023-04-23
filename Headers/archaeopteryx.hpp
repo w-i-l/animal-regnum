@@ -10,6 +10,7 @@ using namespace std;
 #ifndef ARCHAEOPTERYX_FILE_INCLUDED
 #define ARCHAEOPTERYX_FILE_INCLUDED
 
+
 class Archaeopteryx : public Bird, public Reptile{
 
     public:

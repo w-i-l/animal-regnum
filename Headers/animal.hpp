@@ -1,11 +1,10 @@
+#ifndef ANIMAL_FILE_INCLUDED
+#define ANIMAL_FILE_INCLUDED
+
 #include "skin.hpp"
 #include <string>
 
 using namespace std;
-
-#ifndef ANIMAL_FILE_INCLUDED
-#define ANIMAL_FILE_INCLUDED
-
 
 class Animal{
 
