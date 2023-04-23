@@ -4,9 +4,11 @@
 using namespace std;
 
 
-class Reptile: public Animal{
+#ifndef REPTILE_FILE_INCLUDED
+#define REPTILE_FILE_INCLUDED
+class Reptile: virtual public Animal{
 
-    private:
+    protected:
         bool is_venomous;
 
     public:
@@ -29,3 +31,5 @@ class Reptile: public Animal{
 
         void make_sound();
 };
+
+#endif

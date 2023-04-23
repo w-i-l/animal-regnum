@@ -8,9 +8,9 @@ using namespace std;
 #ifndef BIRD_FILE_INCLUDED
 #define BIRD_FILE_INCLUDED
 
-class Bird : public Animal{
+class Bird : virtual public Animal{
 
-    private: 
+    protected: 
         Color wing_color;
         int no_of_eggs;
     

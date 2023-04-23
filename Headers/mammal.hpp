@@ -6,7 +6,7 @@ using namespace std;
 #ifndef MAMMAL_FILE_INCLUDED
 #define MAMMAL_FILE_INCLUDED
 
-class Mammal : public Animal{
+class Mammal : virtual public Animal{
 
     private:
         int no_of_mammal_glands;
