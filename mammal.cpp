@@ -50,6 +50,8 @@ ostream& operator<<(ostream& out, Mammal& copy){
     out << "Mammal Info: " << endl;
     cout << "Number of mammal glands: " << copy.no_of_mammal_glands << endl;
     cout << "Reproductive maturity year: " << copy.reproductive_maturity_year << endl;
+
+    return out;
 }
 
 

@@ -36,6 +36,9 @@ class Animal{
         // virtual
         virtual void make_sound() = 0;
 
+        // method
+        const void greed() const;
+
 };
 
 #endif

@@ -88,3 +88,8 @@ ostream& operator<<(ostream& out, const Animal& copy){
 
     return out;
 }
+
+
+const void Animal::greed() const{
+    cout << "I'm alive!" << endl;
+}
