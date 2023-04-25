@@ -1,6 +1,10 @@
 #include <iostream>
 #include <cstring>
-#include "Headers/archaeopteryx.hpp"
+#include <vector>
+#include "Headers\bird.hpp"
+#include "Headers\reptile.hpp"
+#include "Headers\archaeopteryx.hpp"
+
 
 
 Archaeopteryx::Archaeopteryx() : Animal(), Bird(), Reptile() {
@@ -16,8 +20,14 @@ Archaeopteryx::Archaeopteryx(string name, int no_of_feet, Skin type_of_skin,
 }
 
 
-
 Archaeopteryx::Archaeopteryx(const Archaeopteryx& copy) : Animal(copy), Bird(copy), Reptile(copy){
+
+}
+
+
+Archaeopteryx::Archaeopteryx(const Bird& copy) : Animal(copy), Bird(copy){
+
+    this->is_venomous = false;
 
 }
 
@@ -30,6 +40,16 @@ Archaeopteryx& Archaeopteryx::operator=(const Archaeopteryx& copy){
     }
 
     return *this;
+}
+
+
+Archaeopteryx Archaeopteryx::operator + (Archaeopteryx copy){
+
+    copy.name = copy.name + "-" + this->name;
+    copy.no_of_eggs = this->no_of_eggs + copy.no_of_eggs;
+    copy.is_venomous = this->is_venomous || copy.is_venomous;
+
+    return copy;
 }
 
 
@@ -100,4 +120,17 @@ ostream& operator << (ostream& out, const Archaeopteryx& copy){
 
 void Archaeopteryx::make_sound(){
     cout << "AHHH" << endl;
+}
+
+
+void Archaeopteryx::multiply(vector<Animal*> animals){
+
+    Archaeopteryx* archaeopteryx = new Archaeopteryx;
+
+    for(int i = 0; i < rand() % this->no_of_eggs; i++){
+
+        *archaeopteryx = Archaeopteryx(this->name + "-" + to_string(i), this->no_of_feet, this->type_of_skin, Color::Red, rand() % this->no_of_eggs, this->is_venomous);
+        animals.push_back((Animal*) archaeopteryx);
+        archaeopteryx = new Archaeopteryx;
+    }
 }

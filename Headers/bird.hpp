@@ -1,3 +1,5 @@
+#include <vector>
+#include <iostream>
 #include "animal.hpp"
 #include "skin.hpp"
 #include "reptile.hpp"
@@ -17,6 +19,10 @@ class Bird : virtual public Animal{
         // getters
         Color get_wing_color() const{ return this->wing_color; }
         int get_no_of_eggs() const{ return this->no_of_eggs; }
+        
+        // setters
+        void set_wing_color(Color wing_color) { this->wing_color = wing_color; }
+        void set_no_of_eggs(int no_of_eggs) { this->no_of_eggs = no_of_eggs; }
 
         // constructors
         Bird();
@@ -25,6 +31,7 @@ class Bird : virtual public Animal{
 
         // operators
         Bird& operator = (const Bird& copy);
+        Bird operator + (Bird copy);
 
         // friend
         friend istream& operator>>(istream& in, Bird& copy);
@@ -32,6 +39,8 @@ class Bird : virtual public Animal{
 
         // virtual
         void make_sound();
+        void multiply(vector<Animal*> animals);
+
 };
 
 #endif

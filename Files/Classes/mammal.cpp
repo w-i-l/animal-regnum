@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cstring> 
-#include "Headers/animal.hpp"
-#include "Headers/skin.hpp"
-#include "Headers/mammal.hpp"
+#include <vector>
+#include "Headers\animal.hpp"
+#include "Headers\skin.hpp"
+#include "Headers\mammal.hpp"
+
 
 Mammal::Mammal() : Animal(){
     this->no_of_mammal_glands = 0;
@@ -33,6 +35,18 @@ Mammal& Mammal::operator=(const Mammal& copy){
 }  
 
 
+Mammal Mammal::operator + (Mammal copy){
+
+    copy.name = copy.name + "-" +this->name;
+    copy.no_of_feet = max(this->no_of_feet, copy.no_of_feet);
+    copy.no_of_mammal_glands = this->no_of_mammal_glands + copy.no_of_mammal_glands;
+    copy.reproductive_maturity_year = min(copy.reproductive_maturity_year, this->reproductive_maturity_year);
+
+    return copy;
+
+}
+
+
 istream& operator>>(istream& in, Mammal& copy){
     in >> (Animal&)copy;
     cout << "Mammal Read: " << endl;
@@ -58,3 +72,17 @@ ostream& operator<<(ostream& out, Mammal& copy){
 void Mammal::make_sound(){
     cout << "GRHHHHH" << endl;
 }
+
+
+void Mammal::multiply(vector<Animal*> animals){
+
+    Mammal* mammal = new Mammal;
+
+    for(int i = 0; i < rand() % this->no_of_mammal_glands; i++){
+
+        *mammal = Mammal(this->name + "-" + to_string(i), this->no_of_feet, this->type_of_skin,rand() % 10, rand() % 30);
+        animals.push_back((Animal*) mammal);
+        mammal = new Mammal;
+    }
+}
+

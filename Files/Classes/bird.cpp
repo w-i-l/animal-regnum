@@ -1,6 +1,7 @@
 #include <iostream>
+#include <vector>
 #include <cstring>
-#include "Headers/bird.hpp"
+#include "Headers\bird.hpp"
 
 using namespace  std;
 
@@ -33,24 +34,15 @@ Bird& Bird::operator=(const Bird& copy){
 }
 
 
-// Archaeopteryx Bird::operator + (const Reptile& copy){
+Bird Bird::operator + (Bird copy){
 
-//     Archaropteryx* obj = new Archaropteryx;
+    copy.name = this->name + "-"+ copy.name;
+    copy.no_of_feet = max(this->no_of_feet, copy.no_of_feet);
+    copy.no_of_eggs = this->no_of_eggs + copy.no_of_eggs;
 
-//     obj->name = this->name;
-//     obj->no_of_feet = this->no_of_feet;
-//     obj->type_of_skin = this->type_of_skin;
+    return copy;
 
-//     obj->wing_color = this->wing_color;
-//     obj->no_of_eggs = this->no_of_eggs;
-
-    
-//     obj->is_venomous = copy.is_venomous;
-
-//     return *obj;
-
-// }
-
+}
 
 
 istream& operator>>(istream& in, Bird& copy){
@@ -110,4 +102,17 @@ ostream& operator<<(ostream& out, const Bird& copy){
 
 void Bird::make_sound(){
     cout << "CIP CIP RIP" << endl;
+}
+
+
+void Bird::multiply(vector<Animal*> animals){
+
+    Bird* bird = new Bird;
+
+    for(int i = 0; i < rand() % this->no_of_eggs; i++){
+
+        *bird = Bird(this->name + "-" + to_string(i), this->no_of_feet, this->type_of_skin, Color::White, rand() % 10);
+        animals.push_back((Animal*) bird);
+        bird = new Bird;
+    }
 }

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <cstring>
-#include "Headers/skin.hpp"
-#include "Headers/animal.hpp"
+#include "Headers\skin.hpp"
+#include "Headers\animal.hpp"
 
 using namespace std;
 
@@ -88,7 +88,7 @@ ostream& operator<<(ostream& out, const Animal& copy){
 
     return out;
 }
-
+ 
 
 const void Animal::greed() const{
     cout << "I'm alive!" << endl;

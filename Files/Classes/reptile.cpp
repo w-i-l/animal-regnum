@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
-#include "Headers/reptile.hpp"
+#include <vector>
+#include "Headers\reptile.hpp"
 
 
 Reptile::Reptile() : Animal(){
@@ -30,6 +31,16 @@ Reptile& Reptile::operator=(const Reptile& copy){
 }
 
 
+Reptile Reptile::operator + (Reptile copy){
+
+    copy.name = this->name + '-' + copy.name;
+    copy.no_of_feet = max(this->no_of_feet, copy.no_of_feet);
+    copy.is_venomous = copy.is_venomous || this->is_venomous;
+
+    return copy;
+}
+
+
 istream& operator >> (istream& in, Reptile& copy){
     in >> (Animal&)copy;
     cout << "Is venomous(1/0): ";
@@ -49,4 +60,17 @@ ostream& operator << (ostream& out, const Reptile& copy){
 
 void Reptile::make_sound(){
     cout << "SPRHHHH" << endl;
+}
+
+
+void Reptile::multiply(vector<Animal*> animals){
+
+    Reptile* reptile = new Reptile;
+
+    for(int i = 0; i < rand() % 12; i++){
+
+        *reptile = Reptile(this->name + "-" + to_string(i), this->no_of_feet, this->type_of_skin, this->is_venomous);
+        animals.push_back((Animal*) reptile);
+        reptile = new Reptile;
+    }
 }
