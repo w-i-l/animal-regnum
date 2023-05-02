@@ -615,6 +615,16 @@ void menu(){
         }
 
         else if(option == 'q'){
+            for(auto curent = animals.begin(); curent != animals.end(); curent++){
+                if(typeid(**curent) == typeid(Bird))
+                    delete dynamic_cast<Bird*>(*curent);
+                else if(typeid(**curent) == typeid(Reptile))
+                    delete dynamic_cast<Reptile*>(*curent);
+                else if(typeid(**curent) == typeid(Mammal))
+                    delete dynamic_cast<Mammal*>(*curent);
+                else if(typeid(**curent) == typeid(Archaeopteryx))
+                    delete dynamic_cast<Archaeopteryx*>(*curent);
+            }
             return;
         }
 
