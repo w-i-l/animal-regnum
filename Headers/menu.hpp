@@ -14,7 +14,6 @@
 class Menu{
     private:
 
-
         static Menu* instance;
         vector<Animal*> animals;
 
@@ -23,12 +22,19 @@ class Menu{
         Menu(const Menu&);
         Menu& operator=(const Menu&);
 
-        // methods
-        void read_from_file(string filename);
-        void write_to_file(string filename);
 
     public:
-        Menu* get_instance();
+
+        static Menu* get_instance();
+        
+
+        // methods
+        void read_from_file(string filename, bool append_to_vector);
+        void write_to_file(string filename, bool append);
+
+        void display_animals_names();
+        void delete_animals();
+
 };
 
 #endif

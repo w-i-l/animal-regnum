@@ -17,7 +17,39 @@ Menu* Menu::instance = NULL;
 
 
 Menu::Menu(){
-    read_from_file("animals.txt");
+    Bird* bird = new Bird;
+    Reptile* reptile = new Reptile;
+    Mammal* mammal = new Mammal;
+    Archaeopteryx* archaeopteryx = new Archaeopteryx;
+
+    *bird = Bird("eagle",2, Skin::Feathers, Color::White, 4);
+    animals.push_back((Animal*) bird);
+    bird = new Bird;
+
+    *bird = Bird("owl", 2, Skin::Feathers, Color::Blue, 2);
+    animals.push_back((Animal*) bird);
+
+    *reptile = Reptile("boa", 0, Skin::Scales, 1);
+    animals.push_back((Animal*) reptile);
+    reptile = new Reptile;
+
+    *reptile = Reptile("turtle", 4, Skin::Leather, 0);
+    animals.push_back((Animal*) reptile);
+
+    *mammal = Mammal("koala", 4, Skin::Fur, 2, 10);
+    animals.push_back((Animal*) mammal);
+    mammal = new Mammal;
+
+    *mammal = Mammal("deer", 4, Skin::Leather, 4, 4);
+    animals.push_back((Animal*) mammal);
+
+    *archaeopteryx = Archaeopteryx("arch-2", 2, Skin::Feathers, Color::Green, 2, 0);
+    animals.push_back((Animal*) archaeopteryx);
+    archaeopteryx = new Archaeopteryx;
+
+    *archaeopteryx = Archaeopteryx("arch-1", 2, Skin::Feathers, Color::Blue, 3, 1);
+    animals.push_back((Animal*) archaeopteryx);
+
 }
 
 
@@ -30,44 +62,125 @@ Menu* Menu::get_instance(){
 }
 
 
-void Menu::write_to_file(string filename){
-    
-    ofstream fout(filename);
+void Menu::write_to_file(string filename, bool append){
 
-    if (fout.is_open()){
-        for (int i = 0; i < animals.size(); i++){
-            if(typeid(animals[i]) == typeid(Bird*)){
-                fout << "Bird" << endl;
-                fout << *animals[i] << endl;
-            }
+    ofstream file;
 
-            else if(typeid(animals[i]) == typeid(Reptile*)){
-                fout << "Reptile" << endl;
-                fout << *animals[i] << endl;
-            }
-
-            else if(typeid(animals[i]) == typeid(Mammal*)){
-                fout << "Mammal" << endl;
-                fout << *animals[i] << endl;
-            }
-
-            else if(typeid(animals[i]) == typeid(Archaeopteryx*)){
-                fout << "Archaeopteryx" << endl;
-                fout << *animals[i] << endl;
-            }
-        }
+    if(append == true){
+        file.open(filename, ios::app);
     }
     else{
+        file.open(filename);
+    }
+
+    if(file.is_open() == false){
         throw FileNotFound();
     }
 
-    fout.close();
+    for(int i = 0; i < animals.size(); i++){
+        if(typeid(*(animals[i])) == typeid(Bird)){
+            file << "Bird" << endl;
+            Bird* bird = dynamic_cast<Bird*>(animals[i]);
+            bird->write_to_file(filename);
+            file << endl;
+        }
+        else if(typeid(*(animals[i])) == typeid(Reptile)){
+            file << "Reptile" << endl;
+            Reptile* reptile = dynamic_cast<Reptile*>(animals[i]);
+            reptile->write_to_file(filename);
+            file << endl;
+        }
+        else if(typeid(*(animals[i])) == typeid(Mammal)){
+            file << "Mammal" << endl;
+            Mammal* mammal = dynamic_cast<Mammal*>(animals[i]);
+            mammal->write_to_file(filename);
+            file << endl;
+        }
+        else if(typeid(*(animals[i])) == typeid(Archaeopteryx)){
+            file << "Archaeopteryx" << endl;
+            Archaeopteryx* archaeopteryx = dynamic_cast<Archaeopteryx*>(animals[i]);
+            archaeopteryx->write_to_file(filename);
+            file << endl;
+        }
+
+    }
+
+    file.close();
 }
 
 
+void Menu::read_from_file(string filename, bool append_to_vector){
 
-void Menu::read_from_file(string filename){
+    if(append_to_vector == false){
+        animals.clear();
+    }
 
+    ifstream file(filename);
+
+    if(file.is_open() == false){
+        throw FileNotFound();
+    }
+
+    Bird* bird = new Bird;
+    Reptile* reptile = new Reptile;
+    Mammal* mammal = new Mammal;
+    Archaeopteryx* archaeopteryx = new Archaeopteryx;
+
+    string line;
+
+    while(getline(file, line)){
+
+        if(line == "Bird"){
+            getline(file, line);
+
+            bird->read_from_line(line);
+            animals.push_back((Animal*) bird);
+            
+            // cleaning memory
+            bird = new Bird;
+        }
+        else if(line == "Reptile"){
+            getline(file, line);
+
+            reptile->read_from_line(line);
+            animals.push_back((Animal*) reptile);
+            
+            // cleaning memory
+            reptile = new Reptile;
+        }
+        else if(line == "Mammal"){
+            getline(file, line);
+
+            mammal->read_from_line(line);
+            animals.push_back((Animal*) mammal);
+            
+            // cleaning memory
+            mammal = new Mammal;
+        }
+        else if(line == "Archaeopteryx"){
+            getline(file, line);
+
+            archaeopteryx->read_from_line(line);
+            animals.push_back((Animal*) archaeopteryx);
+            
+            // cleaning memory
+            archaeopteryx = new Archaeopteryx;
+        }
+    }
+
+    file.close();
+}
+
+
+void Menu::display_animals_names(){
+    for(int i = 0; i < animals.size(); i++){
+        cout << animals[i]->get_name() << endl;
+    }
+}
+
+
+void Menu::delete_animals(){
+    animals.clear();
 }
 
 

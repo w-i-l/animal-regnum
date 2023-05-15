@@ -1,4 +1,16 @@
-Bird1 2 feathers red 2 
-Reptile1 4 scales 1 
-Mammal1 4 fur 2 10 
-Archaeopteryx1 2 feathers red 2 1 
+Bird
+eagle 2 feathers white 4 
+Bird
+owl 2 feathers blue 2 
+Reptile
+boa 0 scales 1 
+Reptile
+turtle 4 leather 0 
+Mammal
+koala 4 fur 2 10 
+Mammal
+deer 4 leather 4 4 
+Archaeopteryx
+arch-2 2 feathers green 2 0 
+Archaeopteryx
+arch-1 2 feathers blue 3 1 
