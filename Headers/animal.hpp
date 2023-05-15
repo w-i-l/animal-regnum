@@ -20,6 +20,14 @@ class FileNotFound : public exception{
 };
 
 
+class InvalidOption : public exception{
+    public:
+        virtual const char* what() const throw(){
+            return "Invalid option";
+        }
+};
+
+
 class Animal{
 
     protected:

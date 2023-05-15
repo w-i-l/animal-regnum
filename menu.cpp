@@ -3,6 +3,7 @@
 #include <cstring>
 #include <fstream>
 #include <typeinfo>
+#include <map>
 #include "Headers\animal.hpp"
 #include "Headers\reptile.hpp"
 #include "Headers\bird.hpp"
@@ -184,6 +185,117 @@ void Menu::delete_animals(){
 }
 
 
+// returns 1 if bird, 2 if reptile, 3 if mammal, 4 if archaeopteryx
+int Menu::select_species(string text_to_display){
+
+    int option;
+
+     cout << endl;
+    cout << "Which species would you like to " + text_to_display + "?" << endl;
+    cout << "1. Bird" << endl;
+    cout << "2. Reptile" << endl;
+    cout << "3. Mammal" << endl;
+    cout << "4. Archaropteryx" << endl;
+    
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 0 || option >= 5){
+        throw InvalidOption();
+    }
+
+    return option;
+
+}
+
+template <typename T>
+int Menu::select_animal_from_species(T species){
+
+    // we bind the displayed option to the index in the vector
+    map<int, int> option_to_index;
+
+    int index = 0;
+
+    for(int i = 0; i < animals.size(); i++){
+        if(typeid(*(animals[i])) == typeid(species)){
+            cout << index << ". " << animals[i]->get_name() << endl;
+            option_to_index[index] = i;
+            index ++;
+        }
+    }
+
+    int option;
+
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 0 || option >= index){
+        throw InvalidOption();
+    }
+
+
+    cout << option << " " << index << " " << option_to_index[option] << endl;
+    return option_to_index[option];
+
+}
+
+
+void Menu::add_animal(){
+
+    int species = select_species("add");
+
+    if(species == 1){
+        Bird* bird = new Bird;
+        cin >> *bird;
+        animals.push_back((Animal*) bird);
+    }
+    else if(species == 2){
+        Reptile* reptile = new Reptile;
+        cin >> *reptile;
+        animals.push_back((Animal*) reptile);
+    }
+    else if(species == 3){
+        Mammal* mammal = new Mammal;
+        cin >> *mammal;
+        animals.push_back((Animal*) mammal);
+    }
+    else if(species == 4){
+        Archaeopteryx* archaeopteryx = new Archaeopteryx;
+        cin >> *archaeopteryx;
+        animals.push_back((Animal*) archaeopteryx);
+    }
+
+    cout << "Added successfully!" << endl;
+
+}
+
+
+void Menu::remove_animal(){
+
+    int species = select_species("remove");
+    
+    if(species == 1){
+        int index = select_animal_from_species(Bird());
+        animals.erase(animals.begin() + index);
+    }
+    else if(species == 2){
+        int index = select_animal_from_species(Reptile());
+        animals.erase(animals.begin() + index);
+    }
+    else if(species == 3){
+        int index = select_animal_from_species(Mammal());
+        animals.erase(animals.begin() + index);
+    }
+    else if(species == 4){
+        int index = select_animal_from_species(Archaeopteryx());
+        animals.erase(animals.begin() + index);
+    }
+
+    cout << "Removed successfully!" << endl;
+
+}
 
 // void menu(){
 

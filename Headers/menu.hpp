@@ -22,6 +22,11 @@ class Menu{
         Menu(const Menu&);
         Menu& operator=(const Menu&);
 
+        // methods
+        int select_species(string text_to_display);
+        template<typename T>
+        int select_animal_from_species(T species);
+
 
     public:
 
@@ -34,6 +39,8 @@ class Menu{
 
         void display_animals_names();
         void delete_animals();
+        void add_animal();
+        void remove_animal();
 
 };
 
