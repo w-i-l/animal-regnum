@@ -107,3 +107,34 @@ void Mammal::write_to_file(string filename){
     file.close();
 
 }
+
+
+void Mammal::read_from_line(string line){
+    
+        // we read the animal info
+        Animal::read_from_line(line);
+    
+        // we read the mammal info
+        // no_of_mammal_glands, reproductive_maturity_year
+
+        char aux[30];
+        strcpy(aux, line.c_str());
+
+        // get the name
+        char* token = strtok(aux, " ");
+        // no of feet
+        token = strtok(NULL, " ");
+        // type of skin
+        token = strtok(NULL, " ");
+
+
+        // no_of_mammal_glands
+        token = strtok(NULL, " ");
+        this->no_of_mammal_glands = atoi(token);
+
+        // reproductive_maturity_year
+        token = strtok(NULL, " ");
+        this->reproductive_maturity_year = atoi(token);
+        
+
+}

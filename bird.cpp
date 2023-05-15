@@ -151,3 +151,40 @@ void Bird::write_to_file(string filename){
 
 
 }
+
+
+void Bird::read_from_line(string line){
+    
+        // we read the animal info
+        Animal::read_from_line(line);
+    
+        // we read the bird traits separated by a space
+        // wing color, number of eggs
+    
+        char aux[30];
+        strcpy(aux, line.c_str());
+        // get the name
+        char* token = strtok(aux, " ");
+        // no of feet
+        token = strtok(NULL, " ");
+        // type of skin
+        token = strtok(NULL, " ");
+
+    
+        token = strtok(NULL, " ");
+        if(strcmp(token, "red") == 0)
+            this->wing_color = Color::Red;
+        else if(strcmp(token, "blue") == 0)
+            this->wing_color = Color::Blue;
+        else if(strcmp(token, "green") == 0)
+            this->wing_color = Color::Green;
+        else if(strcmp(token, "purple") == 0)
+            this->wing_color = Color::Purple;
+        else if(strcmp(token, "white") == 0)
+            this->wing_color = Color::White;
+        else
+            this->wing_color = Color::None;
+    
+        token = strtok(NULL, " ");
+        this->no_of_eggs = atoi(token);
+}

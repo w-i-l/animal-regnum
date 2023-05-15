@@ -153,3 +153,32 @@ void Archaeopteryx::write_to_file(string filename){
     file << this->is_venomous << " ";
 
 }
+
+
+void Archaeopteryx::read_from_line(string line){
+
+     // we read the bird info
+    Bird::read_from_line(line);
+
+
+    // we read the reptile info
+
+    char aux[30];
+    strcpy(aux, line.c_str());
+
+    // get the name
+    char* token = strtok(aux, " ");
+    // no of feet
+    token = strtok(NULL, " ");
+    // type of skin
+    token = strtok(NULL, " ");
+    // wing color
+    token = strtok(NULL, " ");
+    // no of eggs
+    token = strtok(NULL, " ");
+
+    // is venomous
+    token = strtok(NULL, " ");
+    this->is_venomous = atoi(token) == 1 ? "true" : "false";
+
+}

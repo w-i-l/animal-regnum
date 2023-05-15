@@ -41,6 +41,8 @@ class Mammal : virtual public Animal{
         void make_sound();
         void multiply(vector<Animal*> animals);
         void write_to_file(string filename);
+        void read_from_line(string line);
+
 
 }; 
 

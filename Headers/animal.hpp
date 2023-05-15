@@ -58,6 +58,7 @@ class Animal{
         // method
         const void greed() const;
         void write_to_file(string filename);
+        void read_from_line(string line);
 
 };
 

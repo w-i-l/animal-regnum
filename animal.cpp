@@ -129,3 +129,28 @@ void Animal::write_to_file(string filename){
 
     file << " ";
 }
+
+
+void Animal::read_from_line(string line){
+    // we read the name, number of feet and type of skin
+    // from the same line separrated by spaces
+
+    char aux[30];
+    strcpy(aux, line.c_str());
+    char* token = strtok(aux, " ");
+    this->name = token;
+    token = strtok(NULL, " ");
+    this->no_of_feet = atoi(token);
+    token = strtok(NULL, " ");
+
+    if (strcmp(token, "fur") == 0)
+        this->type_of_skin = Skin::Fur;
+    else if (strcmp(token, "leather") == 0)
+        this->type_of_skin = Skin::Leather;
+    else if (strcmp(token, "scales") == 0)
+        this->type_of_skin = Skin::Scales;
+    else if (strcmp(token, "feathers") == 0)
+        this->type_of_skin = Skin::Feathers;
+    else
+        this->type_of_skin = Skin::None;
+}

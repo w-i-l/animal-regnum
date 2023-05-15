@@ -35,6 +35,8 @@ class Archaeopteryx : public Bird, public Reptile{
         void make_sound();
         void multiply(vector<Animal*> animals);
         void write_to_file(string filename);
+        void read_from_line(string line);
+
 };
 
 
