@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <fstream>
+#include "Headers\animal.hpp"
 #include "Headers\reptile.hpp"
 
 
@@ -73,4 +75,22 @@ void Reptile::multiply(vector<Animal*> animals){
         animals.push_back((Animal*) reptile);
         reptile = new Reptile;
     }
+}
+
+
+void Reptile::write_to_file(string filename){
+
+    ofstream file(filename, ios::app);
+
+    if(file.is_open() == false){
+        throw FileNotFound();
+    }
+
+    // Animal info
+    Animal::write_to_file(filename);
+
+    // we write reptile info to file separated by a space
+    // is_venomous
+    file << this->is_venomous << " ";
+    
 }

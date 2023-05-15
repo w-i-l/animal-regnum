@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring> 
 #include <vector>
+#include <fstream>
 #include "Headers\animal.hpp"
 #include "Headers\skin.hpp"
 #include "Headers\mammal.hpp"
@@ -86,3 +87,23 @@ void Mammal::multiply(vector<Animal*> animals){
     }
 }
 
+
+void Mammal::write_to_file(string filename){
+
+    ofstream file(filename, ios::app);
+
+    if(file.is_open() == false){
+        throw FileNotFound();
+    }
+
+    // Animal info
+    Animal::write_to_file(filename);
+
+    // we write the mammal info separated by a space
+    // no_of_mammal_glands, reproductive_maturity_year
+    file << this->no_of_mammal_glands << " " << this->reproductive_maturity_year << " ";
+    
+
+    file.close();
+
+}

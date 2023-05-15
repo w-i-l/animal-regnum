@@ -11,6 +11,24 @@
 #ifndef MENU_FILE_INCLUDED
 #define MENU_FILE_INCLUDED
 
-void menu();
+class Menu{
+    private:
+
+
+        static Menu* instance;
+        vector<Animal*> animals;
+
+        // constructor
+        Menu();
+        Menu(const Menu&);
+        Menu& operator=(const Menu&);
+
+        // methods
+        void read_from_file(string filename);
+        void write_to_file(string filename);
+
+    public:
+        Menu* get_instance();
+};
 
 #endif

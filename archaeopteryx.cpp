@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cstring>
 #include <vector>
+#include <fstream>
+#include "Headers\animal.hpp"
 #include "Headers\bird.hpp"
 #include "Headers\reptile.hpp"
 #include "Headers\archaeopteryx.hpp"
@@ -133,4 +135,21 @@ void Archaeopteryx::multiply(vector<Animal*> animals){
         animals.push_back((Animal*) archaeopteryx);
         archaeopteryx = new Archaeopteryx;
     }
+}
+
+
+void Archaeopteryx::write_to_file(string filename){
+
+    ofstream file(filename, ios::app);
+
+    if(file.is_open() == false){
+        throw FileNotFound();
+    }
+
+    // Bird info
+    Bird::write_to_file(filename);
+
+    // Reptile info
+    file << this->is_venomous << " ";
+
 }

@@ -4,7 +4,7 @@
 enum class Skin{Fur,
     Scales,
     Leather,
-    Feather,
+    Feathers,
     None
 };
 

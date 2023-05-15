@@ -10,7 +10,7 @@ using namespace std;
 enum class Skin{Fur,
     Scales,
     Leather,
-    Feather,
+    Feathers,
     None
 };
 
@@ -238,7 +238,7 @@ istream& operator>>(istream& in, Animal& copy){
     in >> copy.name;
     cout << "Number of feet: ";
     in >> copy.no_of_feet;
-    read:cout << "Skin type (fur/leather/feather/scales): ";
+    read:cout << "Skin type (fur/leather/feathers/scales): ";
     char aux[30];
     in >> aux;
 
@@ -248,8 +248,8 @@ istream& operator>>(istream& in, Animal& copy){
         copy.type_of_skin = Skin::Leather;
     else if (strcmp(aux, "scales") == 0)
         copy.type_of_skin = Skin::Scales;
-    else if (strcmp(aux, "feather") == 0)
-        copy.type_of_skin = Skin::Feather;
+    else if (strcmp(aux, "feathers") == 0)
+        copy.type_of_skin = Skin::Feathers;
     else
         goto read;
 
@@ -273,8 +273,8 @@ ostream& operator<<(ostream& out, const Animal& copy){
     else if(copy.type_of_skin == Skin::Scales){
         out << "scales";
     }
-    else if(copy.type_of_skin == Skin::Feather){
-        out << "feather";
+    else if(copy.type_of_skin == Skin::Feathers){
+        out << "feathers";
     }
     else{
         out << "none";
@@ -709,11 +709,11 @@ void menu(){
     Mammal* mammal = new Mammal;
     Archaeopteryx* archaeopteryx = new Archaeopteryx;
 
-    *bird = Bird("eagle",2, Skin::Feather, Color::White, 4);
+    *bird = Bird("eagle",2, Skin::Feathers, Color::White, 4);
     animals.push_back((Animal*) bird);
     bird = new Bird;
 
-    *bird = Bird("owl", 2, Skin::Feather, Color::Blue, 2);
+    *bird = Bird("owl", 2, Skin::Feathers, Color::Blue, 2);
     animals.push_back((Animal*) bird);
 
     *reptile = Reptile("boa", 0, Skin::Scales, 1);
@@ -730,11 +730,11 @@ void menu(){
     *mammal = Mammal("deer", 4, Skin::Leather, 4, 4);
     animals.push_back((Animal*) mammal);
 
-    *archaeopteryx = Archaeopteryx("arch-2", 2, Skin::Feather, Color::Green, 2, 0);
+    *archaeopteryx = Archaeopteryx("arch-2", 2, Skin::Feathers, Color::Green, 2, 0);
     animals.push_back((Animal*) archaeopteryx);
     archaeopteryx = new Archaeopteryx;
 
-    *archaeopteryx = Archaeopteryx("arch-1", 2, Skin::Feather, Color::Blue, 3, 1);
+    *archaeopteryx = Archaeopteryx("arch-1", 2, Skin::Feathers, Color::Blue, 3, 1);
     animals.push_back((Animal*) archaeopteryx);
 
     char option;
@@ -1318,10 +1318,10 @@ void menu(){
 int main(){
 
     
-    // Bird a("vultur", 2, Skin::Feather, Color::Red, 3);
+    // Bird a("vultur", 2, Skin::Feathers, Color::Red, 3);
     // Reptile* r = new Reptile("sarpe", 0, Skin::Scales, 1);
     // cout << (*r) + (*r) << endl;
-    // // Bird b("papagal", 3, Skin::Feather, Color::Red, 5);
+    // // Bird b("papagal", 3, Skin::Feathers, Color::Red, 5);
     // // Archaeopteryx c(a);
     // // cout << c;
     // Archaeopteryx* c = new Archaeopteryx(a);

@@ -1,0 +1,4 @@
+Bird1 2 feathers red 2 
+Reptile1 4 scales 1 
+Mammal1 4 fur 2 10 
+Archaeopteryx1 2 feathers red 2 1 

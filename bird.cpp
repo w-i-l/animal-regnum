@@ -1,6 +1,8 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <fstream>
+#include "Headers\animal.hpp"
 #include "Headers\bird.hpp"
 
 using namespace  std;
@@ -115,4 +117,37 @@ void Bird::multiply(vector<Animal*> animals){
         animals.push_back((Animal*) bird);
         bird = new Bird;
     }
+}
+
+
+void Bird::write_to_file(string filename){
+
+    ofstream file(filename, ios::app);
+
+    if(file.is_open() == false){
+        throw FileNotFound();
+    }
+
+    // Animal info
+    Animal::write_to_file(filename);
+
+    // we write the bird traits separated by a space
+    // wing color, number of eggs
+
+    if(this->wing_color == Color::Blue)
+        file << "blue" << " ";
+    else if(this->wing_color == Color::Red)
+        file << "red" << " ";
+    else if(this->wing_color == Color::White)
+        file << "white" << " ";
+    else if(this->wing_color == Color::Green)
+        file << "green" << " ";
+    else if(this->wing_color == Color::Purple)
+        file << "purple" << " ";
+    else
+        file << "none" << " ";
+
+    file << no_of_eggs << " ";
+
+
 }
