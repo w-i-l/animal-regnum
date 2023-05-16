@@ -34,8 +34,10 @@ int main(){
 
     // cout << reptile.operator+<Archaeopteryx, Bird>(bird) << endl;
 
-    menu->breed_animals();
-    menu->display_animals_names();
+    // menu->breed_animals();
+    // menu->display_animals_names();
+
+    menu->display_animal_info();
 
     return 0;
 }

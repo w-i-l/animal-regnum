@@ -28,6 +28,7 @@ class Menu{
         template<typename T>
         int select_animal_from_species(T species);
         string select_species_from(list<string> species);
+
         string get_type_of_animal(string name);
         string get_name_of_class_from_typid_name(string name);
 
@@ -42,6 +43,8 @@ class Menu{
         void write_to_file(string filename, bool append);
 
         void display_animals_names();
+        void display_animal_info();
+
         void delete_animals();
         void add_animal();
         void remove_animal();
