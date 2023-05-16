@@ -27,12 +27,15 @@ int main(){
     // menu->display_animals_names();
 
 
-    Bird bird = Bird("bird", 2, Skin::Feathers, Color::Red, 2);
-    Reptile reptile = Reptile("reptile", 4, Skin::Scales, 2);
+    // Bird bird = Bird("bird", 2, Skin::Feathers, Color::Red, 2);
+    // Reptile reptile = Reptile("reptile", 4, Skin::Scales, 2);
 
-    cout << bird.operator+<Archaeopteryx, Reptile>(reptile) << endl;
+    // cout << bird.operator+<Archaeopteryx, Reptile>(reptile) << endl;
 
-    cout << reptile.operator+<Archaeopteryx, Bird>(bird) << endl;
+    // cout << reptile.operator+<Archaeopteryx, Bird>(bird) << endl;
+
+    menu->breed_animals();
+    menu->display_animals_names();
 
     return 0;
 }

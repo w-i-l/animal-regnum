@@ -1,6 +1,7 @@
 #include <iostream>
 #include <vector>
 #include <cstring>
+#include <list>
 #include <typeinfo>
 #include "animal.hpp"
 #include "reptile.hpp"
@@ -26,6 +27,9 @@ class Menu{
         int select_species(string text_to_display);
         template<typename T>
         int select_animal_from_species(T species);
+        string select_species_from(list<string> species);
+        string get_type_of_animal(string name);
+        string get_name_of_class_from_typid_name(string name);
 
 
     public:
@@ -41,6 +45,8 @@ class Menu{
         void delete_animals();
         void add_animal();
         void remove_animal();
+
+        void breed_animals();
 
 };
 

@@ -4,6 +4,7 @@
 #include <fstream>
 #include <typeinfo>
 #include <map>
+#include <string>
 #include "Headers\animal.hpp"
 #include "Headers\reptile.hpp"
 #include "Headers\bird.hpp"
@@ -209,13 +210,15 @@ int Menu::select_species(string text_to_display){
 
 }
 
+
+// returns the index of the selected animal in the animals vector
 template <typename T>
 int Menu::select_animal_from_species(T species){
 
     // we bind the displayed option to the index in the vector
     map<int, int> option_to_index;
 
-    int index = 0;
+    int index = 1;
 
     for(int i = 0; i < animals.size(); i++){
         if(typeid(*(animals[i])) == typeid(species)){
@@ -231,12 +234,10 @@ int Menu::select_animal_from_species(T species){
     cin >> option;
     cout << endl;
 
-    if(option < 0 || option >= index){
+    if(option < 1 || option >= index){
         throw InvalidOption();
     }
 
-
-    cout << option << " " << index << " " << option_to_index[option] << endl;
     return option_to_index[option];
 
 }
@@ -298,6 +299,195 @@ void Menu::remove_animal(){
 }
 
 
+// returns the name of the animal species selected
+string Menu::select_species_from(list<string> species){
+
+    cout << "Choose a species: " << endl;
+
+    int index = 1;
+
+    for(auto it = species.begin(); it != species.end(); it++){
+        cout << index << ". " << *it << endl;
+        index ++;
+    }
+
+    int option;
+
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 1 || option >= index){
+        throw InvalidOption();
+    }
+
+    index = 0;
+
+    for(auto it = species.begin(); it != species.end(); it++){
+        if(index == option){
+            return *it;
+        }
+        index ++;
+    }
+
+}
+
+
+void Menu::breed_animals(){
+
+    int first_species = select_species("breed");
+
+    map<int, list<string>> species_to_list_of_species;
+
+    species_to_list_of_species[1] = {"Bird", "Reptile"};
+    species_to_list_of_species[2] = {"Reptile", "Bird"};
+    species_to_list_of_species[3] = {"Mammal"};
+    species_to_list_of_species[4] = {"Archaeopteryx"};
+
+    string second_species_name = select_species_from(species_to_list_of_species[first_species]);
+    string first_species_name = species_to_list_of_species[first_species].front();
+
+    int index_of_first_animal, index_of_second_animal;
+
+    if(first_species_name == "Bird"){
+
+        index_of_first_animal = select_animal_from_species(Bird());
+
+        if(second_species_name == "Bird"){
+
+            index_of_second_animal = select_animal_from_species(Bird());
+            
+            Bird* new_bird = new Bird, first_bird, second_bird;
+
+            first_bird = dynamic_cast<Bird&>(*animals[index_of_first_animal]);
+            second_bird = dynamic_cast<Bird&>(*animals[index_of_second_animal]);
+
+            *new_bird = first_bird + second_bird;
+            animals.push_back((Animal*) new_bird);
+
+        }
+
+        else if(second_species_name == "Reptile"){
+
+            index_of_second_animal = select_animal_from_species(Reptile());
+        
+            Bird bird;
+            Reptile reptile;
+            Archaeopteryx* new_archaeopteryx = new Archaeopteryx;
+
+            bird = dynamic_cast<Bird&>(*animals[index_of_first_animal]);
+            reptile = dynamic_cast<Reptile&>(*animals[index_of_second_animal]);
+
+            *new_archaeopteryx = bird.operator+<Archaeopteryx, Reptile>(reptile);
+            animals.push_back((Animal*) new_archaeopteryx);
+
+        }
+    }
+
+    else if(first_species_name == "Reptile"){
+
+        index_of_first_animal = select_animal_from_species(Reptile());
+
+        if(second_species_name == "Reptile"){
+            index_of_second_animal = select_animal_from_species(Reptile());
+
+            Reptile* new_reptile = new Reptile, first_reptile, second_reptile;
+
+            first_reptile = dynamic_cast<Reptile&>(*animals[index_of_first_animal]);
+            second_reptile = dynamic_cast<Reptile&>(*animals[index_of_second_animal]);
+
+            *new_reptile = first_reptile + second_reptile;
+            animals.push_back((Animal*) new_reptile);
+        }
+
+        else if(second_species_name == "Bird"){
+            index_of_second_animal = select_animal_from_species(Bird());
+
+            Bird bird;
+            Reptile reptile;
+            Archaeopteryx* new_archaeopteryx = new Archaeopteryx;
+
+            bird = dynamic_cast<Bird&>(*animals[index_of_second_animal]);
+            reptile = dynamic_cast<Reptile&>(*animals[index_of_first_animal]);
+
+            *new_archaeopteryx = reptile.operator+<Archaeopteryx, Bird>(bird);
+            animals.push_back((Animal*) new_archaeopteryx);
+        }
+    }
+
+    else if(first_species_name == "Mammal"){
+
+        index_of_first_animal = select_animal_from_species(Mammal());
+
+        if(second_species_name == "Mammal"){
+
+            index_of_second_animal = select_animal_from_species(Mammal());
+
+            Mammal* new_mammal = new Mammal, first_mammal, second_mammal;
+
+            first_mammal = dynamic_cast<Mammal&>(*animals[index_of_first_animal]);
+            second_mammal = dynamic_cast<Mammal&>(*animals[index_of_second_animal]);
+
+            *new_mammal = first_mammal + second_mammal;
+            animals.push_back((Animal*) new_mammal);
+        }
+    }
+
+    else if(first_species_name == "Archaeopteryx"){
+
+        index_of_first_animal = select_animal_from_species(Archaeopteryx());
+
+        if(second_species_name == "Archaeopteryx"){
+            index_of_second_animal = select_animal_from_species(Archaeopteryx());
+
+            Archaeopteryx* new_archaeopteryx = new Archaeopteryx, first_archaeopteryx, second_archaeopteryx;
+
+            first_archaeopteryx = dynamic_cast<Archaeopteryx&>(*animals[index_of_first_animal]);
+            second_archaeopteryx = dynamic_cast<Archaeopteryx&>(*animals[index_of_second_animal]);
+
+            *new_archaeopteryx = first_archaeopteryx + second_archaeopteryx;
+            animals.push_back((Animal*) new_archaeopteryx);
+        }
+    }
+
+    cout << "The new animal has been added to the list." << endl;
+
+}
+
+
+string Menu::get_name_of_class_from_typid_name(string name){
+
+    if(name == typeid(Bird).name()){
+        return "Bird";
+    }
+    else if(name == typeid(Reptile).name()){
+        return "Reptile";
+    }
+    else if(name == typeid(Mammal).name()){
+        return "Mammal";
+    }
+    else if(name == typeid(Archaeopteryx).name()){
+        return "Archaeopteryx";
+    }
+
+}
+
+
+string Menu::get_type_of_animal(string name){
+
+    if(name == "Bird"){
+        return typeid(Bird()).name();
+    }
+    else if(name == "Reptile"){
+        return typeid(Reptile()).name();
+    }
+    else if(name == "Mammal"){
+        return typeid(Mammal()).name();
+    }
+    else if(name == "Archaeopteryx"){
+        return typeid(Archaeopteryx()).name();
+    }
+}
 
 // void menu(){
 
