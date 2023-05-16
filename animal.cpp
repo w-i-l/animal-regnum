@@ -1,8 +1,10 @@
 #include <iostream>
 #include <cstring>
 #include <fstream>
+
 #include "Headers\skin.hpp"
 #include "Headers\animal.hpp"
+#include "Headers\custom_exception.hpp"
 
 using namespace std;
 

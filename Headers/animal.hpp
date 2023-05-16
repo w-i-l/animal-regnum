@@ -3,6 +3,7 @@
 #include <vector>
 #include <stdexcept>
 #include <cstring>
+
 #include "skin.hpp"
 
 using namespace std;
@@ -10,23 +11,6 @@ using std::runtime_error;
 
 #ifndef ANIMAL_FILE_INCLUDED
 #define ANIMAL_FILE_INCLUDED
-
-
-class FileNotFound : public exception{
-    public:
-        virtual const char* what() const throw(){
-            return "File not found";
-        }
-};
-
-
-class InvalidOption : public exception{
-    public:
-        virtual const char* what() const throw(){
-            return "Invalid option";
-        }
-};
-
 
 class Animal{
 

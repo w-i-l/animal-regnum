@@ -5,12 +5,15 @@
 #include <typeinfo>
 #include <map>
 #include <string>
+
 #include "Headers\animal.hpp"
 #include "Headers\reptile.hpp"
 #include "Headers\bird.hpp"
 #include "Headers\mammal.hpp"
 #include "Headers\archaeopteryx.hpp"
 #include "Headers\menu.hpp"
+#include "Headers\custom_exception.hpp"
+
 
 using namespace std;
 
@@ -51,6 +54,9 @@ Menu::Menu(){
 
     *archaeopteryx = Archaeopteryx("arch-1", 2, Skin::Feathers, Color::Blue, 3, 1);
     animals.push_back((Animal*) archaeopteryx);
+
+    admin_username = "admin";
+    admin_password = "admin";
 
 }
 
@@ -531,4 +537,260 @@ void Menu::display_animal_info(){
     cout << endl;
 
 
+}
+
+
+// throws AuthFailed if cant login as admin
+void Menu::admin_auth(){
+    
+    cout << "Please provide your credentials to access the admin menu!" << endl;
+
+    string username, password;
+
+    cout << "Username: ";
+    cin >> username;
+
+    cout << endl;
+
+    cout << "Password: ";
+    cin >> password;
+
+    if(username == admin_username){
+
+        if(password == admin_password){
+            cout << "Welcome, " << username << "!" << endl;
+            return;
+        }
+
+        // wrong password - give 2 more attempts
+        else{
+
+            int attempts = 2;
+
+            while(attempts && password != admin_password){
+
+                cout << "Wrong password!" << endl;
+                cout << "You have " << attempts << " more attempts to enter the correct password." << endl;
+
+                cout << "Password: ";
+                cin >> password;
+
+                attempts--;
+            }
+
+            if(password == admin_password){
+                cout << "Welcome, " << username << "!" << endl;
+                return;
+            }
+            else{
+                throw AuthFailed();
+            }
+        }
+    }
+    else{
+        throw AuthFailed();
+    }
+}
+
+
+int Menu::get_option_for_user(){
+
+    cout << endl << "=== User === Menu ===" << endl << endl;
+    cout << "1. Display all animlas" << endl;
+    cout << "2. Select an animal" << endl;
+    cout << "3. Log out" << endl;
+    cout << "0. Exit the application" << endl;
+
+    int option;
+    cout << endl << "Enter an option: ";
+    cin >> option;
+
+    if(option < 0 || option >= 4){
+        throw InvalidOption();
+    }
+
+    return option;
+}
+
+
+void Menu::user_menu(){
+
+    while(true){
+        int option = get_option_for_user();
+
+        system("cls");
+
+        if(option == 1){
+            display_animals_names();
+        }
+
+        else if(option == 2){
+            display_animal_info();
+        }
+        
+        else if(option == 3){
+            return;
+        }
+
+        else if(option == 0){
+            exit(0);
+        }
+
+        else{
+            throw InvalidOption();
+        }
+    }
+
+}
+
+
+int Menu::get_option_for_admin(){
+
+    cout << "::::Admin::::Menu::::" << endl << endl;
+
+    cout << "[1] Add an animal" << endl;
+    cout << "[2] Remove an animal" << endl;
+    cout << "[3] Breed two animals" << endl;
+    cout << "[4] Display all animals" << endl;
+    cout << "[5] Select an animal" << endl;
+    cout << "[6] Update the zoo from a file" << endl;
+    cout << "[7] Save the zoo to a file" << endl;
+    cout << "[8] Delete the zoo" << endl;
+    cout << "[9] Log Out" << endl;
+    cout << "[0] Exit the application" << endl;
+
+    int option;
+    cout << "Choose an option from above: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 0 || option >= 10){
+        throw InvalidOption();
+    }
+
+    return option;
+
+}
+
+
+void Menu::admin_menu(){
+
+    while(true){
+
+        int option = get_option_for_admin();
+
+        system("cls");
+
+        if(option == 1){
+            add_animal();
+        }
+        
+        else if(option == 2){
+            remove_animal();
+        }
+        
+        else if(option == 3){
+            breed_animals();
+        }
+        
+        else if(option == 4){
+            display_animals_names();
+        }
+        
+        else if(option == 5){
+            display_animal_info();
+        }
+        
+        else if(option == 6){
+
+            string filename, append_to_vector;
+            bool append;
+
+            cout << "Enter the filename: ";
+            cin >> filename;
+            cout << endl;
+
+            cout << "Do you want to append to the existing animals?(y/n): ";
+            cin >> append_to_vector;
+            cout << endl;
+
+            if(append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y"){
+                append = true;
+            }
+            else if(append_to_vector == "n" || append_to_vector == "no" || append_to_vector == "N"){
+                append = false;
+            }
+            else{
+                throw InvalidOption();
+            }
+
+            read_from_file(filename, append);
+        }
+
+        else if(option == 7){
+            string filename, append_to_vector;
+            bool append;
+
+            cout << "Enter the filename: ";
+            cin >> filename;
+            cout << endl;
+
+            cout << "Do you want to append to the existing animals from file?(y/n): ";
+            cin >> append_to_vector;
+            cout << endl;
+
+            if(append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y"){
+                append = true;
+            }
+            else if(append_to_vector == "n" || append_to_vector == "no" || append_to_vector == "N"){
+                append = false;
+            }
+            else{
+                throw InvalidOption();
+            }
+
+            write_to_file(filename, append);
+        }
+
+        else if(option == 8){
+            delete_animals();
+        }
+
+        else if(option == 9){
+            return;
+        }
+
+        else if (option == 0){
+            exit(0);
+        }
+
+        else{
+            throw InvalidOption();
+        }
+    }
+}
+
+
+void Menu::run(){
+
+    while(true){
+        cout << "Welcome to the Zoo!" << endl << endl;
+        cout << "Select your role!" << endl;
+        cout << "[1] admin" << endl;
+        cout << "[2] user" << endl;
+
+        int option;
+        cout << "Enter your option: ";
+        cin >> option;
+        cout << endl;
+
+        if(option == 1){
+            admin_auth();            
+            admin_menu();
+        }
+
+        else if(option == 2){
+            user_menu();
+        }
+    }
 }

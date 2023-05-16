@@ -1,8 +1,10 @@
 #include <string>
 #include <vector>
 #include <iostream>
+
 #include "animal.hpp"
 #include "skin.hpp"
+
 using namespace std;
 
 #ifndef MAMMAL_FILE_INCLUDED

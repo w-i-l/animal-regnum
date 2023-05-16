@@ -1,8 +1,10 @@
 #include <vector>
 #include <iostream>
+
 #include "animal.hpp"
 #include "skin.hpp"
 #include "reptile.hpp"
+
 using namespace std;
 
 #ifndef BIRD_FILE_INCLUDED

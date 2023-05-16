@@ -2,8 +2,11 @@
 #include <cstring>
 #include <vector>
 #include <fstream>
+
 #include "Headers\animal.hpp"
 #include "Headers\reptile.hpp"
+#include "Headers\custom_exception.hpp"
+
 
 
 Reptile::Reptile() : Animal(){
@@ -117,5 +120,5 @@ void Reptile::read_from_line(string line){
     // is venomous
     token = strtok(NULL, " ");
     this->is_venomous = atoi(token);
-    
+
 }

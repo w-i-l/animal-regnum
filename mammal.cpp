@@ -2,9 +2,12 @@
 #include <cstring> 
 #include <vector>
 #include <fstream>
+
 #include "Headers\animal.hpp"
 #include "Headers\skin.hpp"
 #include "Headers\mammal.hpp"
+#include "Headers\custom_exception.hpp"
+
 
 
 Mammal::Mammal() : Animal(){
@@ -135,6 +138,6 @@ void Mammal::read_from_line(string line){
         // reproductive_maturity_year
         token = strtok(NULL, " ");
         this->reproductive_maturity_year = atoi(token);
-        
+
 
 }

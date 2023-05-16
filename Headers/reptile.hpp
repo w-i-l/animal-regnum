@@ -1,9 +1,12 @@
 #include <string>
 #include <vector>
 #include <iostream>
+
 #include "animal.hpp"
 #include "skin.hpp"
+
 using namespace std;
+
 #ifndef REPTILE_FILE_INCLUDED
 #define REPTILE_FILE_INCLUDED
 
