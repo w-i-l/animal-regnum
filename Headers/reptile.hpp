@@ -29,6 +29,8 @@ class Reptile: virtual public Animal{
         // operators
         Reptile& operator = (const Reptile& copy);
         Reptile operator + (Reptile copy);
+        template<typename Return, typename T>
+        Return operator+(const T& copy);
 
         // friends
         friend istream& operator >> (istream& in, Reptile& copy);

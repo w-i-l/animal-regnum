@@ -32,6 +32,8 @@ class Bird : virtual public Animal{
         // operators
         Bird& operator = (const Bird& copy);
         Bird operator + (Bird copy);
+        template<typename Return, typename T>
+        Return operator+(const T& copy);
 
         // friend
         friend istream& operator>>(istream& in, Bird& copy);

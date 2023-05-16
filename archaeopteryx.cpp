@@ -182,3 +182,37 @@ void Archaeopteryx::read_from_line(string line){
     this->is_venomous = atoi(token) == 1 ? "true" : "false";
 
 }
+
+
+template<>
+Archaeopteryx Bird::operator+(const Reptile& copy){
+    
+        Archaeopteryx archaeopteryx;
+    
+        archaeopteryx.name = this->name + "-" + copy.get_name();
+        archaeopteryx.no_of_feet = this->no_of_feet + copy.get_no_of_feet();
+        archaeopteryx.type_of_skin = this->type_of_skin;
+        archaeopteryx.wing_color = this->wing_color;
+        archaeopteryx.no_of_eggs = this->no_of_eggs;
+        archaeopteryx.set_is_venomous(copy.get_is_venomous());
+
+    
+        return archaeopteryx;
+}
+
+
+template<>
+Archaeopteryx Reptile::operator+(const Bird& copy){
+    
+        Archaeopteryx archaeopteryx;
+    
+        archaeopteryx.name = this->name + "-" + copy.get_name();
+        archaeopteryx.no_of_feet = this->no_of_feet + copy.get_no_of_feet();
+        archaeopteryx.type_of_skin = this->type_of_skin;
+        archaeopteryx.set_wing_color(copy.get_wing_color());
+        archaeopteryx.set_no_of_eggs(copy.get_no_of_eggs());
+        archaeopteryx.set_is_venomous(this->is_venomous);
+
+    
+        return archaeopteryx;
+}

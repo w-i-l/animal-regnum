@@ -190,7 +190,7 @@ int Menu::select_species(string text_to_display){
 
     int option;
 
-     cout << endl;
+    cout << endl;
     cout << "Which species would you like to " + text_to_display + "?" << endl;
     cout << "1. Bird" << endl;
     cout << "2. Reptile" << endl;
@@ -296,6 +296,8 @@ void Menu::remove_animal(){
     cout << "Removed successfully!" << endl;
 
 }
+
+
 
 // void menu(){
 
