@@ -30,16 +30,16 @@ class Menu{
         Menu& operator=(const Menu&);
 
         // aux methods
-        int select_species(string text_to_display);
+        int select_species(string text_to_display) throw(InvalidOption);
         template<typename T>
         int select_animal_from_species(T species);
-        string select_species_from(list<string> species);
+        string select_species_from(list<string> species) throw (InvalidOption);
 
         string get_type_of_animal(string name);
         string get_name_of_class_from_typid_name(string name);
 
         // main methods
-        void read_from_file(string filename, bool append_to_vector);
+        void read_from_file(string filename, bool append_to_vector) throw(FileNotFound);
         void write_to_file(string filename, bool append);
 
         void display_animals_names();
@@ -53,10 +53,10 @@ class Menu{
         
         // menu
 
-        int get_option_for_admin();
-        int get_option_for_user();
+        int get_option_for_admin() throw(InvalidOption);
+        int get_option_for_user() throw (InvalidOption);
 
-        void admin_auth();
+        void admin_auth() throw(AuthFailed);
         void admin_menu();
         void user_menu();
 

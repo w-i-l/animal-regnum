@@ -118,7 +118,7 @@ void Menu::write_to_file(string filename, bool append){
 }
 
 
-void Menu::read_from_file(string filename, bool append_to_vector){
+void Menu::read_from_file(string filename, bool append_to_vector) throw (FileNotFound){
 
     if(append_to_vector == false){
         animals.clear();
@@ -195,7 +195,7 @@ void Menu::delete_animals(){
 
 // returns 1 if bird, 2 if reptile, 3 if mammal, 4 if archaeopteryx
 // Which animal would you like to "text_to_display"?
-int Menu::select_species(string text_to_display){
+int Menu::select_species(string text_to_display) throw (InvalidOption){
 
     int option;
 
@@ -220,6 +220,7 @@ int Menu::select_species(string text_to_display){
 
 
 // returns the index of the selected animal in the animals vector
+// throws InvalidOption and catch itself the error
 template <typename T>
 int Menu::select_animal_from_species(T species){
 
@@ -360,7 +361,7 @@ void Menu::remove_animal(){
 
 
 // returns the name of the animal species selected
-string Menu::select_species_from(list<string> species){
+string Menu::select_species_from(list<string> species) throw (InvalidOption){
 
     cout << "Choose a species: " << endl;
 
@@ -652,7 +653,7 @@ void Menu::display_animal_info(){
 
 
 // throws AuthFailed if cant login as admin
-void Menu::admin_auth(){
+void Menu::admin_auth() throw(AuthFailed){
     
     cout << "Please provide your credentials to access the admin menu!" << endl;
 
@@ -704,7 +705,7 @@ void Menu::admin_auth(){
 }
 
 
-int Menu::get_option_for_user(){
+int Menu::get_option_for_user() throw (InvalidOption){
 
     cout << endl << "=== User === Menu ===" << endl << endl;
     cout << "1. Display all animlas" << endl;
@@ -762,16 +763,12 @@ void Menu::user_menu(){
         else if(option == 0){
             exit(0);
         }
-
-        else{
-            throw InvalidOption();
-        }
     }
 
 }
 
 
-int Menu::get_option_for_admin(){
+int Menu::get_option_for_admin() throw (InvalidOption){
 
     cout << "::::Admin::::Menu::::" << endl << endl;
 
@@ -844,27 +841,53 @@ void Menu::admin_menu(){
         else if(option == 6){
 
             string filename, append_to_vector;
-            bool append;
+            bool append = false;
 
-            cout << "Enter the filename: ";
-            cin >> filename;
-            cout << endl;
+            try{
 
-            cout << "Do you want to append to the existing animals?(y/n): ";
-            cin >> append_to_vector;
-            cout << endl;
+                cout << "Enter the filename: ";
+                cin >> filename;
+                cout << endl;
 
-            if(append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y"){
-                append = true;
+                cout << "Do you want to append to the existing animals?(y/n): ";
+                cin >> append_to_vector;
+                cout << endl;
+
+                if(append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y"){
+                    append = true;
+                }
+                else if(append_to_vector == "n" || append_to_vector == "no" || append_to_vector == "N"){
+                    append = false;
+                }
+                else{
+                    throw InvalidOption();
+                }
             }
-            else if(append_to_vector == "n" || append_to_vector == "no" || append_to_vector == "N"){
-                append = false;
-            }
-            else{
-                throw InvalidOption();
+            catch(InvalidOption& e){
+                while(append_to_vector != "y" && append_to_vector != "yes" && append_to_vector != "Y" && append_to_vector != "n" && append_to_vector != "no" && append_to_vector != "N"){
+                    cout << endl << e.what() << endl;
+
+                    cout << "Do you want to append to the existing animals?(y/n): ";
+                    cin >> append_to_vector;
+                    cout << endl;
+                }
+
+                if(append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y"){
+                    append = true;
+                }
             }
 
-            read_from_file(filename, append);
+            try{
+                read_from_file(filename, append);
+            }
+            catch(FileNotFound& e){
+                cout << e.what() << endl;
+                
+                cout << "Last chance to enter the filename: ";
+                cin >> filename;
+
+                read_from_file(filename, append);
+            }
         }
 
         else if(option == 7){
