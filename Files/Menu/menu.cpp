@@ -5,6 +5,7 @@
 #include <typeinfo>
 #include <map>
 #include <string>
+#include <windows.h>
 
 #include "../../Headers/animal.hpp"
 #include "../../Headers/bird.hpp"
@@ -652,6 +653,166 @@ void Menu::display_animal_info(){
 }
 
 
+void Menu::display_parties(){
+    
+        cout << "Parties:" << endl;
+
+        for(auto it = parties.begin(); it != parties.end(); it++){
+
+            if(it->second.size() == 0){
+                continue;
+            }
+    
+            cout << "Hour: " << it->first << endl;
+    
+            for(auto it2 = it->second.begin(); it2 != it->second.end(); it2++){
+                cout << *it2 << endl;
+            }
+    
+            cout << endl;
+        }
+    
+        cout << endl;
+}
+
+
+bool is_hour_valid(string hour) {
+    if (hour[0] >= '0' && hour[0] < '3') {
+        if ((hour[1] >= '0' && hour[1] <= '9' && (hour[0] == '1' || hour[0] == '0'))
+            || (hour[1] >= '0' && hour[1] < '4' && hour[0] == '2')) {
+            if (hour[2] == ':') {
+                if (hour[3] >= '0' && hour[3] <= '5' && hour[4] >= '0' && hour[4] <= '9') {
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
+
+// throws InvalidOption if the hour is not in the correct format
+void Menu::add_party(string hour, string host) throw(InvalidOption){
+
+    if(is_hour_valid(hour) && parties.find(hour) == parties.end() && hour.size() == 5 && hour[2] == ':' ){
+        parties[hour] = {host};
+        cout << endl << "Created party at " << hour << " hosted by " << host << endl << endl;
+    }
+    else{
+
+        if(parties.find(hour) != parties.end()){
+            cout << endl << "There is already a party at this hour!" << endl << endl;
+        }
+        else{
+            throw InvalidOption();
+        }
+    }
+
+    
+}
+
+
+// throws InvalidOption if the party doesnt exist
+void Menu::remove_party(string hour) throw(InvalidOption){
+
+    if(is_hour_valid(hour) && parties.find(hour) != parties.end()){
+        parties.erase(hour);
+        cout << endl << "Party at " << hour << " has been removed!" << endl << endl;
+    }
+    else{
+        throw InvalidOption();
+    }
+
+}
+
+
+void Menu::add_guest(string hour, string guest) throw(InvalidOption){
+
+    if(is_hour_valid(hour) && parties.find(hour) != parties.end()){
+        parties[hour].insert(guest);
+        cout << endl << "Guest " << guest << " has been added to the party at " << hour << endl << endl;
+    }
+    else{
+        throw InvalidOption();
+    }
+
+}
+
+
+void Menu::remove_guest(string hour, string guest) throw(InvalidOption){
+
+    if(is_hour_valid(hour) && parties.find(hour) != parties.end()){
+        parties[hour].erase(guest);
+        cout << endl << "Guest " << guest << " has been removed from the party at " << hour << endl << endl;
+    }
+    else{
+        throw InvalidOption();
+    }
+
+}
+
+
+// saves the parties to a binary file
+void Menu::save_parties_to_file(string filename) throw(FileNotFound){
+
+    ofstream file(filename, ios::binary);
+
+    if (file.is_open()) {
+        for (const auto& party : parties) {
+            // Write hour
+            file.write(party.first.c_str(), party.first.size() + 1);
+
+            // Write number of guests
+            int number_of_guests = party.second.size();
+            file.write(reinterpret_cast<char*>(&number_of_guests), sizeof(number_of_guests));
+
+            // Write guests
+            for (const auto& guest : party.second) {
+                file.write(guest.c_str(), guest.size() + 1);
+            }
+        }
+        file.close();
+    }
+    else{
+        throw FileNotFound();
+    }
+
+
+}
+
+
+// reads the parties from a binary file
+void Menu::read_parties_from_file(string filename) throw(FileNotFound){
+
+    ifstream file(filename, ios::binary);
+
+    if (file.is_open()) {
+        while (!file.eof()) {
+            string hour;
+            int number_of_guests;
+
+            // Read hour
+            getline(file, hour, '\0');
+
+            // Read number of guests
+            file.read(reinterpret_cast<char*>(&number_of_guests), sizeof(number_of_guests));
+
+            // Read guests
+            for (int i = 0; i < number_of_guests; i++) {
+                string guest;
+                getline(file, guest, '\0');
+                parties[hour].insert(guest);
+            }
+        }
+        file.close();
+    }
+    else{
+        throw FileNotFound();
+    }
+
+}
+
+
 // throws AuthFailed if cant login as admin
 void Menu::admin_auth() throw(AuthFailed){
     
@@ -710,14 +871,19 @@ int Menu::get_option_for_user() throw (InvalidOption){
     cout << endl << "=== User === Menu ===" << endl << endl;
     cout << "1. Display all animlas" << endl;
     cout << "2. Select an animal" << endl;
-    cout << "3. Log out" << endl;
+    cout << "3. Create a party" << endl;
+    cout << "4. Remove a party" << endl;
+    cout << "5. Add a guest to a party" << endl;
+    cout << "6. Remove a guest from a party" << endl;
+    cout << "7. Display all parties" << endl;
+    cout << "8. Log out" << endl;
     cout << "0. Exit the application" << endl;
 
     int option;
     cout << endl << "Enter an option: ";
     cin >> option;
 
-    if(option < 0 || option >= 4){
+    if(option < 0 || option >= 9){
         throw InvalidOption();
     }
 
@@ -726,6 +892,15 @@ int Menu::get_option_for_user() throw (InvalidOption){
 
 
 void Menu::user_menu(){
+
+    cout << "Loading parties" << endl;
+    for(int i = 0; i < 10; i++){
+        Sleep(100);
+        cout << ".";
+    }
+    cout << endl << "Done" << endl << endl;
+
+    read_parties_from_file("parties.bin");
 
     while(true){
         int option;
@@ -755,12 +930,216 @@ void Menu::user_menu(){
         else if(option == 2){
             display_animal_info();
         }
-        
+
         else if(option == 3){
+
+            string name;
+            cout << "What is your name?: ";
+            cin >> name;
+            cout << endl;
+
+            string hour;
+            cout << "Enter the starting hour of the party(HH:MM): ";
+            cin >> hour;
+            cout << endl;
+
+            try{
+                add_party(hour, name);
+            }
+            catch(InvalidOption& e){
+
+                while(true){
+
+                    cout << e.what() << endl;
+
+                    cout << "Please provide a valid hour(HH:MM)!";
+                    cout << "Enter the starting hour of the party(HH:MM): ";
+                    cin >> hour;
+                    cout << endl;
+
+                    try{
+                        add_party(hour, name);
+                        break;
+                    }
+                    catch(InvalidOption& e){
+                        continue;
+                    }
+                }
+            }
+
+        }
+        
+        else if(option == 4){
+
+            string name, hour;
+
+            cout << "What is your name?: ";
+            cin >> name;
+            cout << endl;
+
+            cout << "Enter the starting hour of the party(HH:MM): ";
+            cin >> hour;
+            cout << endl;
+
+            try{
+
+                if( parties[hour].find(name) != parties[hour].end()){
+                    remove_party(hour);
+                }
+                else{
+                    cout << "You are not the host of this party!" << endl;
+                }
+            }
+            catch(InvalidOption& e){
+
+                cout << hour << " " << is_hour_valid(hour) << endl;
+
+                while(true){
+
+                    cout << e.what() << endl;
+
+                    cout << "Please provide a valid hour(HH:MM)!";
+                    cout << "Enter the starting hour of the party(HH:MM): ";
+                    cin >> hour;
+                    cout << endl;
+
+                    try{
+                        remove_party(hour);
+                        break;
+                    }
+                    catch(InvalidOption& e){
+                        continue;
+                    }
+                }
+            }
+
+        }
+
+        else if(option == 5){
+
+            string name, hour;
+
+            cout << "What is your name?: ";
+            cin >> name;
+            cout << endl;
+
+            cout << "Enter the starting hour of the party(HH:MM): ";
+            cin >> hour;
+            cout << endl;
+
+            if( parties[hour].find(name) != parties[hour].end()){
+                string guest;
+                cout << "Enter the name of the guest: ";
+                cin >> guest;
+                cout << endl;
+
+                try{
+                    add_guest(hour, guest);
+                }
+                catch(InvalidOption& e){
+
+                    while(true){
+
+                        cout << e.what() << endl;
+
+                        cout << "Please provide a valid hour(HH:MM)!";
+                        cout << "Enter the starting hour of the party(HH:MM): ";
+                        cin >> hour;
+                        cout << endl;
+
+                        try{
+                            add_guest(hour, guest);
+                            break;
+                        }
+                        catch(InvalidOption& e){
+                            continue;
+                        }
+                    }
+                }
+            }
+            else{
+                cout << "You are not the host of this party!" << endl;
+            }
+        }
+
+        else if(option == 6){
+                
+            string name, hour;
+
+            cout << "What is your name?: ";
+            cin >> name;
+            cout << endl;
+
+            cout << "Enter the starting hour of the party(HH:MM): ";
+            cin >> hour;
+            cout << endl;
+
+            if( parties[hour].find(name) != parties[hour].end()){
+                string guest;
+                cout << "Enter the name of the guest: ";
+                cin >> guest;
+                cout << endl;
+
+                try{
+                    remove_guest(hour, guest);
+                }
+                catch(InvalidOption& e){
+
+                    while(true){
+
+                        cout << e.what() << endl;
+
+                        cout << "Please provide a valid hour(HH:MM)!";
+                        cout << "Enter the starting hour of the party(HH:MM): ";
+                        cin >> hour;
+                        cout << endl;
+
+                        try{
+                            remove_guest(hour, guest);
+                            break;
+                        }
+                        catch(InvalidOption& e){
+                            continue;
+                        }
+                    }
+                }
+            }
+            else{
+                cout << "You are not the host of this party!" << endl;
+            }
+            }
+
+        else if(option == 7){
+            display_parties();
+        }
+
+        else if(option == 8){
+
+            char c;
+
+            cout << "Do you want to save the progress?(y/n): ";
+            cin >> c;
+
+            if(c == 'y' || c == 'Y'){
+                save_parties_to_file("parties.bin");
+                cout << "Progress saved!" << endl;
+            }
+
             return;
         }
 
         else if(option == 0){
+            
+            char c;
+
+            cout << "Do you want to save the progress?(y/n): ";
+            cin >> c;
+
+            if(c == 'y' || c == 'Y'){
+                save_parties_to_file("parties.bin");
+                cout << "Progress saved!" << endl;
+            }
+
             exit(0);
         }
     }
@@ -947,10 +1326,32 @@ void Menu::admin_menu(){
         }
 
         else if(option == 9){
+                        
+            char c;
+
+            cout << "Do you want to save the progress?(y/n): ";
+            cin >> c;
+
+            if(c == 'y' || c == 'Y'){
+                write_to_file("animals.txt", false);
+                cout << "Progress saved!" << endl;
+            }
+
             return;
         }
 
         else if (option == 0){
+
+            char c;
+
+            cout << "Do you want to save the progress?(y/n): ";
+            cin >> c;
+
+            if(c == 'y' || c == 'Y'){
+                write_to_file("animals.txt", false);
+                cout << "Progress saved!" << endl;
+            }
+            
             exit(0);
         }
     }

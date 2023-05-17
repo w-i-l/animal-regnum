@@ -4,6 +4,8 @@
 #include <list>
 #include <typeinfo>
 #include <exception>
+#include <map>
+#include <set>
 
 #include "animal.hpp"
 #include "reptile.hpp"
@@ -23,11 +25,15 @@ class Menu{
 
         static Menu* instance;
         vector<Animal*> animals;
+        map<string, set<string>> parties;
 
         // constructor
         Menu();
         Menu(const Menu&);
         Menu& operator=(const Menu&);
+
+        // destructor
+        ~Menu();
 
         // aux methods
         int select_species(string text_to_display) throw(InvalidOption);
@@ -51,6 +57,16 @@ class Menu{
 
         void breed_animals();
         
+        void display_parties();
+        void add_party(string hour, string host) throw(InvalidOption);
+        void remove_party(string hour) throw(InvalidOption);
+        void add_guest(string hour, string guest) throw(InvalidOption);
+        void remove_guest(string hour, string guest) throw(InvalidOption);
+        
+        // binary files
+        void save_parties_to_file(string filename) throw(FileNotFound);
+        void read_parties_from_file(string filename) throw(FileNotFound);
+
         // menu
 
         int get_option_for_admin() throw(InvalidOption);

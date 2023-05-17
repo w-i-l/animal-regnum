@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <map>
+#include <set>
 
 #include "Headers\animal.hpp"
 #include "Headers\bird.hpp"
@@ -10,7 +12,8 @@
 
 using namespace std;
 
-int main(){
+
+int main() {
 
     Menu* menu = Menu::get_instance();
     menu->run();
