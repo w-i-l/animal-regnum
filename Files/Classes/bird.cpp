@@ -55,8 +55,26 @@ istream& operator>>(istream& in, Bird& copy){
     in >> (Animal&)copy;
     cout << "Bird Read: " << endl;
 
-    cout << "Number of eggs: ";
-    in >> copy.no_of_eggs;
+    try{
+    
+        cout << "Number of eggs: ";
+        in >> copy.no_of_eggs;
+    
+        if(copy.no_of_eggs < 0){
+            throw InvalidOption();
+        }
+    }
+    catch(InvalidOption& e){
+    
+        while(copy.no_of_eggs < 0){
+
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a number of eggs greater than 0!" << endl;
+            cout << "Number of eggs: ";
+            in >> copy.no_of_eggs;
+        }
+    }
 
     read:cout << "Color (red/green/blue/purple/white): ";
     char aux[30];

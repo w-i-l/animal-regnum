@@ -53,11 +53,48 @@ Mammal Mammal::operator + (Mammal copy){
 
 istream& operator>>(istream& in, Mammal& copy){
     in >> (Animal&)copy;
+
     cout << "Mammal Read: " << endl;
-    cout << "Number of mammal glands: ";
-    in >> copy.no_of_mammal_glands;
-    cout << "Reproductive maturity year: ";
-    in >> copy.reproductive_maturity_year;
+
+    try{
+
+        cout << "Number of mammal glands: ";
+        in >> copy.no_of_mammal_glands;
+
+        if(copy.no_of_mammal_glands < 0){
+            throw InvalidOption();
+        }
+    }
+    catch(InvalidOption& e){
+
+        while(copy.no_of_mammal_glands < 0){
+            cout << endl << e.what() << endl;
+    
+            cout << "Please provide a number greater than 0!" << endl;
+            cout << "Number of mammal glands: ";
+            in >> copy.no_of_mammal_glands;
+        }
+    }
+
+    try{
+
+        cout << "Reproductive maturity year: ";
+        in >> copy.reproductive_maturity_year;
+
+        if(copy.reproductive_maturity_year < 0){
+            throw InvalidOption();
+        }
+    }
+    catch(InvalidOption& e){
+
+        while(copy.reproductive_maturity_year < 0){
+            cout << endl << e.what() << endl;
+    
+            cout << "Please provide a number greater than 0!" << endl;
+            cout << "Reproductive maturity year: ";
+            in >> copy.reproductive_maturity_year;
+        }
+    }
 
     return in;
 }

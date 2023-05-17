@@ -63,8 +63,24 @@ istream& operator >> (istream& in, Archaeopteryx& copy){
 
     // Bird
 
-    cout << "Number of eggs: ";
-    in >> copy.no_of_eggs;
+    try{
+        cout << "Number of eggs: ";
+        in >> copy.no_of_eggs;
+
+        if(copy.no_of_eggs < 0)
+            throw InvalidOption();
+    }
+    catch(InvalidOption& e){
+
+        while(copy.no_of_eggs < 0){
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a number of eggs greater than 0!" << endl;
+            cout << "Number of eggs: ";
+            in >> copy.no_of_eggs;
+        }
+    }
+
 
     read:cout << "Color (red/green/blue/purple/white): ";
     char aux[30];
@@ -84,11 +100,31 @@ istream& operator >> (istream& in, Archaeopteryx& copy){
 
     // Reptile
 
-    cout << "Is venomous(1/0): ";
-    in >> copy.is_venomous;
+    char venom;
+
+    try{
+        cout << "Is venomous(1/0): ";
+        in >> venom;
+
+        if(venom != '0' && venom != '1')
+            throw InvalidOption();
+        
+        copy.is_venomous = venom - '0';
+    }
+    catch(InvalidOption& e){
+
+        while(venom != '0' && venom != '1'){
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a valid option!" << endl;
+            cout << "Is venomous(1/0): ";
+            in >> venom;
+        }
+
+        copy.is_venomous = venom - '0';
+    }
 
     return in;
-
 }
 
 
