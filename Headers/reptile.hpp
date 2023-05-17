@@ -4,6 +4,8 @@
 
 #include "animal.hpp"
 #include "skin.hpp"
+#include "custom_exception.hpp"
+
 
 using namespace std;
 
@@ -42,7 +44,7 @@ class Reptile: virtual public Animal{
         // virtual
         void make_sound();
         void multiply(vector<Animal*> animals);
-        void write_to_file(string filename);
+        void write_to_file(string filename) throw(FileNotFound);
         void read_from_line(string line);
 
 

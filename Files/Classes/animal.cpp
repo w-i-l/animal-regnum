@@ -121,7 +121,7 @@ const void Animal::greed() const{
 
 // we write the Animal info separrated by spaces
 // on the same line, and we end the file with " "
-void Animal::write_to_file(string filename){
+void Animal::write_to_file(string filename) throw(FileNotFound){
 
     ofstream file(filename, ios::app);
 

@@ -103,7 +103,7 @@ void Reptile::multiply(vector<Animal*> animals){
 }
 
 
-void Reptile::write_to_file(string filename){
+void Reptile::write_to_file(string filename) throw(FileNotFound){
 
     ofstream file(filename, ios::app);
 

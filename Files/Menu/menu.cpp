@@ -223,27 +223,38 @@ int Menu::select_species(string text_to_display){
 template <typename T>
 int Menu::select_animal_from_species(T species){
 
+    int option;
+
     // we bind the displayed option to the index in the vector
     map<int, int> option_to_index;
 
-    int index = 1;
+    start_select_animal_from_species: try{
+    
+        option_to_index.clear();
 
-    for(int i = 0; i < animals.size(); i++){
-        if(typeid(*(animals[i])) == typeid(species)){
-            cout << index << ". " << animals[i]->get_name() << endl;
-            option_to_index[index] = i;
-            index ++;
+        int index = 1;
+
+        for(int i = 0; i < animals.size(); i++){
+            if(typeid(*(animals[i])) == typeid(species)){
+                cout << index << ". " << animals[i]->get_name() << endl;
+                option_to_index[index] = i;
+                index ++;
+            }
+        }
+
+
+        cout << endl << "Enter an option: ";
+        cin >> option;
+        cout << endl;
+
+        if(option < 1 || option >= index){
+            throw InvalidOption();
         }
     }
-
-    int option;
-
-    cout << endl << "Enter an option: ";
-    cin >> option;
-    cout << endl;
-
-    if(option < 1 || option >= index){
-        throw InvalidOption();
+    catch(InvalidOption& e){
+        cout << endl << e.what() << endl;
+        cout << "Please provide a valid option!" << endl;
+        goto start_select_animal_from_species;
     }
 
     return option_to_index[option];
@@ -253,7 +264,27 @@ int Menu::select_animal_from_species(T species){
 
 void Menu::add_animal(){
 
-    int species = select_species("add");
+    int species;
+    
+    try{
+        species = select_species("add");
+    }
+    catch(InvalidOption& e){
+        
+        while(true){
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a valid option!" << endl;
+            
+            try{
+                species = select_species("add");
+                break;
+            }
+            catch(InvalidOption& e){
+                continue;
+            }
+        }
+    }
 
     if(species == 1){
         Bird* bird = new Bird;
@@ -283,7 +314,28 @@ void Menu::add_animal(){
 
 void Menu::remove_animal(){
 
-    int species = select_species("remove");
+    int species;
+    
+    try{
+        species = select_species("remove");
+    } 
+    catch(InvalidOption& e){
+        
+        while(true){
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a valid option!" << endl;
+            
+            try{
+                species = select_species("remove");
+                break;
+            }
+            catch(InvalidOption& e){
+                continue;
+            }
+        }
+    }
+        
     
     if(species == 1){
         int index = select_animal_from_species(Bird());
@@ -343,7 +395,26 @@ string Menu::select_species_from(list<string> species){
 
 void Menu::breed_animals(){
 
-    int first_species = select_species("breed");
+    int first_species;
+    try{
+        first_species = select_species("breed");
+    } 
+    catch(InvalidOption& e){
+
+        while(true){
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a valid option!" << endl;
+            
+            try{
+                first_species = select_species("breed");
+                break;
+            }
+            catch(InvalidOption& e){
+                continue;
+            }
+        }
+    }
 
     map<int, list<string>> species_to_list_of_species;
 
@@ -352,7 +423,28 @@ void Menu::breed_animals(){
     species_to_list_of_species[3] = {"Mammal"};
     species_to_list_of_species[4] = {"Archaeopteryx"};
 
-    string second_species_name = select_species_from(species_to_list_of_species[first_species]);
+    string second_species_name;
+    
+    try{
+     second_species_name = select_species_from(species_to_list_of_species[first_species]);
+    }
+    catch(InvalidOption& e){
+
+        while(true){
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a valid option!" << endl;
+            
+            try{
+                second_species_name = select_species_from(species_to_list_of_species[first_species]);
+                break;
+            }
+            catch(InvalidOption& e){
+                continue;
+            }
+        }
+    }
+
     string first_species_name = species_to_list_of_species[first_species].front();
 
     int index_of_first_animal, index_of_second_animal;
@@ -501,7 +593,25 @@ string Menu::get_type_of_animal(string name){
 // shows info from a selected animal by user
 void Menu::display_animal_info(){
 
-    int selected_species = select_species("display info");
+    int selected_species;
+    try{
+        selected_species = select_species("display info");
+    }
+    catch(InvalidOption& e){
+        while(true){
+            cout << endl << e.what() << endl;
+
+            cout << "Please provide a valid option!" << endl;
+            
+            try{
+                selected_species = select_species("display info");
+                break;
+            }
+            catch(InvalidOption& e){
+                continue;
+            }
+        }
+    }
     
     // Bird
     if(selected_species == 1){
@@ -617,7 +727,23 @@ int Menu::get_option_for_user(){
 void Menu::user_menu(){
 
     while(true){
-        int option = get_option_for_user();
+        int option;
+        try{
+            option = get_option_for_user();
+        } 
+        catch(InvalidOption& e){
+            while(true){
+                cout << e.what() << endl;
+
+                try{
+                    option = get_option_for_user();
+                    break;
+                }
+                catch(InvalidOption& e){
+                    continue;
+                }
+            }
+        }
 
         system("cls");
 
@@ -678,7 +804,20 @@ void Menu::admin_menu(){
 
     while(true){
 
-        int option = get_option_for_admin();
+        int option;
+        
+        try{
+            option = get_option_for_admin();
+        }
+        catch(InvalidOption& e){
+            cout << endl << e.what() << endl;
+            
+            while(option < 0 || option >= 10){
+                cout << "Choose an option from above: ";
+                cin >> option;
+                cout << endl;
+            }
+        }
 
         system("cls");
 
@@ -730,27 +869,54 @@ void Menu::admin_menu(){
 
         else if(option == 7){
             string filename, append_to_vector;
-            bool append;
+            bool append = false;
 
-            cout << "Enter the filename: ";
-            cin >> filename;
-            cout << endl;
+            try{
+                cout << "Enter the filename: ";
+                cin >> filename;
+                cout << endl;
 
-            cout << "Do you want to append to the existing animals from file?(y/n): ";
-            cin >> append_to_vector;
-            cout << endl;
+                cout << "Do you want to append to the existing animals from file?(y/n): ";
+                cin >> append_to_vector;
+                cout << endl;
 
-            if(append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y"){
-                append = true;
+                if(append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y"){
+                    append = true;
+                }
+                else if(append_to_vector == "n" || append_to_vector == "no" || append_to_vector == "N"){
+                    append = false;
+                }
+                else{
+                    throw InvalidOption();
+                }
+
             }
-            else if(append_to_vector == "n" || append_to_vector == "no" || append_to_vector == "N"){
-                append = false;
-            }
-            else{
-                throw InvalidOption();
+            catch(InvalidOption& e){
+                while(append_to_vector != "y" && append_to_vector != "yes" && append_to_vector != "Y" && append_to_vector != "n" && append_to_vector != "no" && append_to_vector != "N"){
+                    cout << endl << e.what() << endl;
+
+                    cout << "Do you want to append to the existing animals from file?(y/n): ";
+                    cin >> append_to_vector;
+                }
+
+                append = append_to_vector == "y" || append_to_vector == "yes" || append_to_vector == "Y";
+
             }
 
-            write_to_file(filename, append);
+            try{
+                write_to_file(filename, append);
+            }
+            catch(FileNotFound& e){
+
+                cout << endl << e.what() << endl;
+
+                cout << "Last chance to enter the filename: ";
+                cin >> filename;
+
+                write_to_file(filename, append);
+
+            }
+
         }
 
         else if(option == 8){
@@ -763,10 +929,6 @@ void Menu::admin_menu(){
 
         else if (option == 0){
             exit(0);
-        }
-
-        else{
-            throw InvalidOption();
         }
     }
 }

@@ -141,7 +141,7 @@ void Bird::multiply(vector<Animal*> animals){
 }
 
 
-void Bird::write_to_file(string filename){
+void Bird::write_to_file(string filename) throw(FileNotFound){
 
     ofstream file(filename, ios::app);
 

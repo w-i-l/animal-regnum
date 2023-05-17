@@ -176,7 +176,7 @@ void Archaeopteryx::multiply(vector<Animal*> animals){
 }
 
 
-void Archaeopteryx::write_to_file(string filename){
+void Archaeopteryx::write_to_file(string filename) throw(FileNotFound){
 
     ofstream file(filename, ios::app);
 

@@ -5,6 +5,7 @@
 #include <cstring>
 
 #include "skin.hpp"
+#include "custom_exception.hpp"
 
 using namespace std;
 using std::runtime_error;
@@ -49,7 +50,7 @@ class Animal{
 
         // method
         const void greed() const;
-        void write_to_file(string filename);
+        void write_to_file(string filename) throw(FileNotFound);
         void read_from_line(string line);
 
 };

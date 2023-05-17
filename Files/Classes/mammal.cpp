@@ -128,7 +128,7 @@ void Mammal::multiply(vector<Animal*> animals){
 }
 
 
-void Mammal::write_to_file(string filename){
+void Mammal::write_to_file(string filename) throw(FileNotFound){
 
     ofstream file(filename, ios::app);
 
