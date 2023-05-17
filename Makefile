@@ -2,9 +2,9 @@ CC = g++
 
 all: main.exe
 
-main.exe: animal.o bird.o reptile.o mammal.o archaeopteryx.o menu.o main.o
+main.exe: animal.o bird.o reptile.o mammal.o archaeopteryx.o corral.o menu.o main.o
 	@echo Linking...
-	@$(CC) animal.o bird.o reptile.o mammal.o archaeopteryx.o menu.o main.o -o main.exe
+	@$(CC) animal.o bird.o reptile.o mammal.o archaeopteryx.o corral.o menu.o main.o -o main.exe
 
 animal.o: Files/Classes/animal.cpp
 	echo Compiling animal.cpp...
@@ -25,6 +25,10 @@ mammal.o: Files/Classes/mammal.cpp
 archaeopteryx.o: Files/Classes/archaeopteryx.cpp
 	@echo Compiling archaeopteryx.cpp...
 	@$(CC) -c Files/Classes/archaeopteryx.cpp -o archaeopteryx.o
+
+corral.o: Files/Classes/corral.cpp
+	@echo Compiling corral.cpp...
+	@$(CC) -c Files/Classes/corral.cpp -o corral.o
 
 menu.o: Files/Menu/menu.cpp
 	@echo Compiling menu.cpp...

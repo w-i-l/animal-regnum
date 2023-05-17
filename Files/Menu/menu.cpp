@@ -58,7 +58,7 @@ Menu::Menu(){
     animals.push_back((Animal*) archaeopteryx);
 
     admin_username = "admin";
-    admin_password = "admin";
+    admin_password = "admin";k3
 
 }
 
