@@ -6,13 +6,14 @@
 #include <map>
 #include <string>
 
-#include "Headers\animal.hpp"
-#include "Headers\reptile.hpp"
-#include "Headers\bird.hpp"
-#include "Headers\mammal.hpp"
-#include "Headers\archaeopteryx.hpp"
-#include "Headers\menu.hpp"
-#include "Headers\custom_exception.hpp"
+#include "../../Headers/animal.hpp"
+#include "../../Headers/bird.hpp"
+#include "../../Headers/reptile.hpp"
+#include "../../Headers/mammal.hpp"
+#include "../../Headers/archaeopteryx.hpp"
+#include "../../Headers/menu.hpp"
+#include "../../Headers/custom_exception.hpp"
+
 
 
 using namespace std;
@@ -328,7 +329,7 @@ string Menu::select_species_from(list<string> species){
         throw InvalidOption();
     }
 
-    index = 0;
+    index = 1;
 
     for(auto it = species.begin(); it != species.end(); it++){
         if(index == option){
@@ -778,6 +779,7 @@ void Menu::run(){
         cout << "Select your role!" << endl;
         cout << "[1] admin" << endl;
         cout << "[2] user" << endl;
+        cout << "[0] exit" << endl;
 
         int option;
         cout << "Enter your option: ";
@@ -791,6 +793,14 @@ void Menu::run(){
 
         else if(option == 2){
             user_menu();
+        }
+
+        else if(option == 0){
+            return;
+        }
+        
+        else{
+            throw InvalidOption();
         }
     }
 }

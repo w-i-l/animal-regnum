@@ -3,9 +3,9 @@
 #include <cstring>
 #include <fstream>
 
-#include "Headers\animal.hpp"
-#include "Headers\bird.hpp"
-#include "Headers\custom_exception.hpp"
+#include "../../Headers/animal.hpp"
+#include "../../Headers/bird.hpp"
+#include "../../Headers/custom_exception.hpp"
 
 
 using namespace  std;

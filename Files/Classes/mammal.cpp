@@ -3,10 +3,10 @@
 #include <vector>
 #include <fstream>
 
-#include "Headers\animal.hpp"
-#include "Headers\skin.hpp"
-#include "Headers\mammal.hpp"
-#include "Headers\custom_exception.hpp"
+#include "../../Headers/animal.hpp"
+#include "../../Headers/skin.hpp"
+#include "../../Headers/mammal.hpp"
+#include "../../Headers/custom_exception.hpp"
 
 
 

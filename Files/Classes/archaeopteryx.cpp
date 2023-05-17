@@ -3,11 +3,11 @@
 #include <vector>
 #include <fstream>
 
-#include "Headers\animal.hpp"
-#include "Headers\bird.hpp"
-#include "Headers\reptile.hpp"
-#include "Headers\archaeopteryx.hpp"
-#include "Headers\custom_exception.hpp"
+#include "../../Headers/animal.hpp"
+#include "../../Headers/bird.hpp"
+#include "../../Headers/reptile.hpp"
+#include "../../Headers/archaeopteryx.hpp"
+#include "../../Headers/custom_exception.hpp"
 
 
 
