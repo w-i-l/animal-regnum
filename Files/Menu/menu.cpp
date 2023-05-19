@@ -12,6 +12,7 @@
 #include "../../Headers/reptile.hpp"
 #include "../../Headers/mammal.hpp"
 #include "../../Headers/archaeopteryx.hpp"
+#include "../../Headers/corral.hpp"
 #include "../../Headers/menu.hpp"
 #include "../../Headers/custom_exception.hpp"
 
@@ -57,8 +58,19 @@ Menu::Menu(){
     *archaeopteryx = Archaeopteryx("arch-1", 2, Skin::Feathers, Color::Blue, 3, 1);
     animals.push_back((Animal*) archaeopteryx);
 
+    Corral<Mammal>* corral = new Corral<Mammal>;
+
+    *corral = Corral<Mammal>("beer-corral", {dynamic_cast<Mammal*>(animals[4])});
+    mammal_corral.push_back(corral);
+
+
+    corral = new Corral<Mammal>;
+    *corral = Corral<Mammal>("forest-corral", {dynamic_cast<Mammal*>(animals[5])});
+    mammal_corral.push_back(corral);
+
+
     admin_username = "admin";
-    admin_password = "admin";k3
+    admin_password = "admin";
 
 }
 
@@ -1147,6 +1159,249 @@ void Menu::user_menu(){
 }
 
 
+void Menu::display_corrals(){
+    
+        cout << "Corrals:" << endl;
+        
+        for(int i = 0; i < mammal_corral.size(); i++){
+            cout << i + 1 << ". " << mammal_corral[i]->get_corral_name() << endl;
+        }
+
+        cout << endl;
+}
+
+
+void Menu::display_animals_from_corral(){
+
+    corral_read:int option;
+    cout << "Choose a corral: " << endl;
+    
+    for(int i = 0; i < mammal_corral.size(); i++){
+        cout << i + 1 << ". " << mammal_corral[i]->get_corral_name() << endl;
+    }
+
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 1 || option > mammal_corral.size()){
+        cout << "Please provide a valid option!" << endl;
+        goto corral_read;
+    }
+
+    option --;
+
+    cout << "Animals from " << mammal_corral[option]->get_corral_name() << ":" << endl;
+
+    for(int i = 0; i < mammal_corral[option]->get_animals().size(); i++){
+        cout << i + 1 << ". " << mammal_corral[option]->get_animals()[i]->get_name() << endl;
+    }
+
+    cout << endl;
+
+}
+
+
+void Menu::add_animal_to_corral(){
+
+    corral_read_2:int option;
+    cout << "Choose a corral: " << endl;
+    
+    for(int i = 0; i < mammal_corral.size(); i++){
+        cout << i + 1 << ". " << mammal_corral[i]->get_corral_name() << endl;
+    }
+
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 1 || option > mammal_corral.size()){
+        cout << "Please provide a valid option!" << endl;
+        goto corral_read_2;
+    }
+
+    Mammal* mammal = new Mammal;
+
+    cin >> *mammal;
+
+    mammal_corral[option]->add_animal(mammal);
+
+    cout << "Animal added successfully!" << endl << endl;
+
+}
+
+
+void Menu::remove_animal_from_corral(){
+
+    corral_read_3:int option;
+    cout << "Choose a corral: " << endl;
+    
+    for(int i = 0; i < mammal_corral.size(); i++){
+        cout << i + 1 << ". " << mammal_corral[i]->get_corral_name() << endl;
+    }
+
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 1 || option > mammal_corral.size()){
+        cout << "Please provide a valid option!" << endl;
+        goto corral_read_3;
+    }
+
+    option --;
+    
+    read_corral_4:int index = 1;
+
+    for(int i = 0; i < mammal_corral[option]->get_animals().size(); i++){
+        cout << index << ". " << mammal_corral[option]->get_animals()[i]->get_name() << endl;
+        index ++;
+    }
+
+    cout << endl;
+
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 1 || option > mammal_corral.size()){
+        cout << "Please provide a valid option!" << endl;
+        goto read_corral_4;
+    }
+
+    option --;
+
+    mammal_corral[option]->remove_animal(*(mammal_corral[option]->get_animals().begin() + option));
+
+    cout << "Animal removed successfully!" << endl << endl;
+
+}
+
+
+void Menu::create_corral(){
+
+    Corral<Mammal>* corral = new Corral<Mammal>;
+
+    cin >> *corral;
+
+    mammal_corral.push_back(corral);
+
+    cout << "Corral created successfully!" << endl << endl;
+
+}
+
+
+void Menu::remove_corral(){
+
+    corral_read_5:int option;
+    cout << "Choose a corral: " << endl;
+    
+    for(int i = 0; i < mammal_corral.size(); i++){
+        cout << i + 1 << ". " << mammal_corral[i]->get_corral_name() << endl;
+    }
+
+    cout << endl << "Enter an option: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 1 || option > mammal_corral.size()){
+        cout << "Please provide a valid option!" << endl;
+        goto corral_read_5;
+    }
+
+    option --;
+
+    mammal_corral.erase(mammal_corral.begin() + option);
+
+    cout << "Corral removed successfully!" << endl << endl;
+
+}
+
+
+int Menu::get_option_for_corral() throw (InvalidOption){
+
+    cout << "::::Corral::::Menu::::" << endl << endl;
+
+    cout << "[1] Display all corrals" << endl;
+    cout << "[2] Select a corral" << endl;
+    cout << "[3] Add an animal to a corral" << endl;
+    cout << "[4] Remove an animal from a corral" << endl;
+    cout << "[5] Create a new corral" << endl;
+    cout << "[6] Remove a corral" << endl;
+    cout << "[7] Log Out" << endl;
+    cout << "[0] Exit the application" << endl;
+
+    int option;
+    cout << "Choose an option from above: ";
+    cin >> option;
+    cout << endl;
+
+    if(option < 0 || option >= 8){
+        throw InvalidOption();
+    }
+
+    return option;
+
+}
+
+
+void Menu::corral_menu(){
+
+    while(true){
+
+        int option;
+        
+        try{
+            option = get_option_for_corral();
+        }
+        catch(InvalidOption& e){
+            cout << endl << e.what() << endl;
+            
+            while(option < 0 || option >= 8){
+                cout << "Choose an option from above: ";
+                cin >> option;
+                cout << endl;
+            }
+        }
+
+        system("cls");
+
+        if(option == 1){
+            display_corrals();
+        }
+
+        else if(option == 2){
+            display_animals_from_corral();
+        }
+
+        else if(option == 3){
+            add_animal_to_corral();
+        }
+
+        else if(option == 4){
+            remove_animal_from_corral();
+        }
+
+        else if(option == 5){
+            create_corral();
+        }
+
+        else if(option == 6){
+            remove_corral();
+        }
+
+        else if(option == 7){
+            return;
+        }
+
+        else if(option == 0){
+            exit(0);
+        }
+    }
+
+}
+
+
 int Menu::get_option_for_admin() throw (InvalidOption){
 
     cout << "::::Admin::::Menu::::" << endl << endl;
@@ -1159,7 +1414,8 @@ int Menu::get_option_for_admin() throw (InvalidOption){
     cout << "[6] Update the zoo from a file" << endl;
     cout << "[7] Save the zoo to a file" << endl;
     cout << "[8] Delete the zoo" << endl;
-    cout << "[9] Log Out" << endl;
+    cout << "[9] Corral Menu" << endl;
+    cout << "[10] Log Out" << endl;
     cout << "[0] Exit the application" << endl;
 
     int option;
@@ -1167,7 +1423,7 @@ int Menu::get_option_for_admin() throw (InvalidOption){
     cin >> option;
     cout << endl;
 
-    if(option < 0 || option >= 10){
+    if(option < 0 || option >= 11){
         throw InvalidOption();
     }
 
@@ -1188,7 +1444,7 @@ void Menu::admin_menu(){
         catch(InvalidOption& e){
             cout << endl << e.what() << endl;
             
-            while(option < 0 || option >= 10){
+            while(option < 0 || option >= 11){
                 cout << "Choose an option from above: ";
                 cin >> option;
                 cout << endl;
@@ -1326,6 +1582,10 @@ void Menu::admin_menu(){
         }
 
         else if(option == 9){
+            corral_menu();
+        }
+
+        else if(option == 10){
                         
             char c;
 

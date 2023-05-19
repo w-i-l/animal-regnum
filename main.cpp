@@ -8,6 +8,8 @@
 #include "Headers\mammal.hpp"
 #include "Headers\reptile.hpp"
 #include "Headers\archaeopteryx.hpp"
+#include "Headers\custom_exception.hpp"
+#include "Headers\corral.hpp"
 #include "Headers\menu.hpp"
 
 using namespace std;

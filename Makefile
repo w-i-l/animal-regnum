@@ -7,7 +7,7 @@ main.exe: animal.o bird.o reptile.o mammal.o archaeopteryx.o corral.o menu.o mai
 	@$(CC) animal.o bird.o reptile.o mammal.o archaeopteryx.o corral.o menu.o main.o -o main.exe
 
 animal.o: Files/Classes/animal.cpp
-	echo Compiling animal.cpp...
+	@echo Compiling animal.cpp...
 	@$(CC) -c Files/Classes/animal.cpp -o animal.o
 
 bird.o: Files/Classes/bird.cpp
@@ -39,5 +39,5 @@ main.o: main.cpp
 	@$(CC) -c main.cpp -o main.o
 
 clean:
-	@echo Cleaning all .o files...
+	@echo Cleaning all .o and .out files...
 	@del *.o

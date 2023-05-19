@@ -12,6 +12,7 @@
 #include "bird.hpp"
 #include "mammal.hpp"
 #include "archaeopteryx.hpp"
+#include "corral.hpp"
 
 #ifndef MENU_FILE_INCLUDED
 #define MENU_FILE_INCLUDED
@@ -26,6 +27,7 @@ class Menu{
         static Menu* instance;
         vector<Animal*> animals;
         map<string, set<string>> parties;
+        vector<Corral<Mammal>*> mammal_corral;
 
         // constructor
         Menu();
@@ -63,9 +65,22 @@ class Menu{
         void add_guest(string hour, string guest) throw(InvalidOption);
         void remove_guest(string hour, string guest) throw(InvalidOption);
         
+        // corral
+        void display_corrals();
+        void display_animals_from_corral();
+        void add_animal_to_corral();
+        void remove_animal_from_corral();
+        void create_corral();
+        void remove_corral();
+
+
         // binary files
         void save_parties_to_file(string filename) throw(FileNotFound);
         void read_parties_from_file(string filename) throw(FileNotFound);
+
+        // corral menu
+        int get_option_for_corral() throw(InvalidOption);
+        void corral_menu();
 
         // menu
 
